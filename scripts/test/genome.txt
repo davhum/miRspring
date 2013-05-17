@@ -1,0 +1,949 @@
+@RG	ID:DRR000560.fastq	PL:SOLID	PU:255_255	LB:DRR000560.fastq	PI:0	DS:36F	DT:2010-06-08T08:08:08+1000	SM:Unknown
+@PG	ID:Unknown_2010-06-08T08:08:08+1000_255_255	PN:LifeScope	VN:2.5
+@CO	RG:DRR000560.fastq	LD:Unknown	LT:Fragment	AT:Unknown	DE:2010-06-08T08:08:08+1000	CU:10672744	CT:10672744	SP:Unknown	SD:Unknown	BX:0	TN:36	TX:36	EC:0	ER:0	CO:Unknown	UU:e0e7c622-f957-49ea-a5f0-25ccdff703bc	PJ:Unknown	SO:Unknown	PN:Unknown
+
+miRNA idex	Start pos	miRNA name	Freq	Length	ERROR
+1069	44	hsa-mir-16-2	18	25		
+66	82	hsa-mir-197	1	24	11TC 	
+1069	44	hsa-mir-16-2	1	24	13AT 	
+1069	46	hsa-mir-16-2	2	22		
+1068	54	hsa-mir-15b	1	22	3GA 	
+1068	81	hsa-mir-15b	1	19		
+862	84	hsa-mir-128-1	1	23	16CT 	
+39	90	hsa-mir-30c-1	1	21	1CA 	
+1166	44	hsa-mir-4804	1	24	6CG 	
+1190	39	hsa-mir-378a	1	20		
+1190	77	hsa-mir-378a	4	24	23CA 	
+113	86	hsa-mir-29b-2	1	24		
+1190	77	hsa-mir-378a	2	21	17GT 	
+1170	50	hsa-mir-9-2	19	18		
+1124	49	hsa-mir-577	37	21		
+59	50	hsa-mir-186	4	25		
+113	109	hsa-mir-29b-2	1	21		
+120	106	hsa-mir-320b-2	15	19		
+823	49	hsa-mir-548ad	11	22		
+39	90	hsa-mir-30c-1	3	21		
+1079	48	hsa-mir-28	2	22	22GA 	
+1031	50	hsa-mir-191	1256	20		
+1069	44	hsa-mir-16-2	3	24	11TC 	
+1042	103	hsa-mir-1284	1	23		
+66	82	hsa-mir-197	1	24	19CT 	
+82	95	hsa-mir-92b	1	21	7AG 	
+1079	87	hsa-mir-28	1	23	1CA 	
+1079	88	hsa-mir-28	1	19		
+1030	49	hsa-mir-425	1247	24		
+910	49	hsa-mir-149	4	20		
+120	106	hsa-mir-320b-2	1	18		
+1189	50	hsa-mir-145	2	20		
+59	50	hsa-mir-186	46	21		
+1068	58	hsa-mir-15b	1	18		
+1037	38	hsa-let-7g	1	21		
+1079	47	hsa-mir-28	5	22		
+1030	88	hsa-mir-425	234	18		
+59	49	hsa-mir-186	109	21		
+1161	52	hsa-mir-449c	1	22		
+1134	39	hsa-mir-4454	3	19		
+1031	51	hsa-mir-191	22	19		
+120	106	hsa-mir-320b-2	2	23		
+1031	52	hsa-mir-191	2	22		
+1164	87	hsa-mir-582	14	21		
+1068	54	hsa-mir-15b	1	21		
+1134	40	hsa-mir-4454	1	22		
+1079	88	hsa-mir-28	1	22	16TC 	
+1190	77	hsa-mir-378a	9	21	15CT 	
+1069	44	hsa-mir-16-2	1	24	4CT 	
+119	46	hsa-mir-664a	1	26		
+1082	94	hsa-mir-570	2	23		
+112	88	hsa-mir-29c	8	19		
+61	82	hsa-mir-760	1	20		
+1069	49	hsa-mir-16-2	2	19	18TA 	
+828	52	hsa-mir-216a	1	23		
+891	46	hsa-mir-26b	1	20	3CA 	
+82	94	hsa-mir-92b	1	22		
+1068	54	hsa-mir-15b	1	27		
+1130	46	hsa-mir-3140	1	23		
+1037	39	hsa-let-7g	16	18		
+119	83	hsa-mir-664a	15	23		
+1188	98	hsa-mir-143	14	19		
+1030	88	hsa-mir-425	1	19		
+1079	88	hsa-mir-28	2	22	3CA 	
+891	46	hsa-mir-26b	4	21	11TC 	
+1069	44	hsa-mir-16-2	1	24	16AC 	
+1068	54	hsa-mir-15b	1	18		
+1030	49	hsa-mir-425	7	19		
+1203	95	hsa-mir-3912	1	22		
+1187	50	hsa-mir-584	13	21		
+1079	90	hsa-mir-28	6	21		
+1068	82	hsa-mir-15b	1	19	3TA 	
+70	87	hsa-mir-942	2	21		
+1103	47	hsa-mir-4802	1	21		
+1190	78	hsa-mir-378a	1	20	15AT 	
+1012	79	hsa-mir-3134	1	23		
+66	82	hsa-mir-197	2	24	4AC 	
+61	82	hsa-mir-760	1	22	22GA 	
+129	72	hsa-mir-1537	1	22		
+1030	90	hsa-mir-425	10	18		
+100	104	hsa-mir-199a-2	3	24		
+59	49	hsa-mir-186	1	25		
+831	56	hsa-mir-5192	1	21		
+70	47	hsa-mir-942	1	23		
+132	84	hsa-mir-4677	4	20		
+80	45	hsa-mir-190b	1	26		
+59	49	hsa-mir-186	13	18		
+10	56	hsa-mir-34a	10	22		
+1030	90	hsa-mir-425	1	23		
+1203	97	hsa-mir-3912	1	20		
+1101	59	hsa-mir-574	3	22		
+1068	54	hsa-mir-15b	19	20		
+1190	77	hsa-mir-378a	1	22	18AC 	
+1031	54	hsa-mir-191	7	19		
+1134	39	hsa-mir-4454	3	18		
+891	46	hsa-mir-26b	2	23	23GT 	
+1079	89	hsa-mir-28	1	22	8TC 	
+1037	41	hsa-let-7g	13	20		
+909	85	hsa-mir-4786	1	20		
+1079	88	hsa-mir-28	1	22	6GC 	
+1042	64	hsa-mir-1284	2	21		
+1190	78	hsa-mir-378a	5	22	22CT 	
+61	83	hsa-mir-760	2	20		
+11	46	hsa-mir-5697	2	22		
+910	49	hsa-mir-149	12	22		
+27	84	hsa-mir-4425	1	23		
+1164	88	hsa-mir-582	1	20		
+891	46	hsa-mir-26b	1	22	5AC 	
+1080	88	hsa-mir-944	4	22		
+1079	88	hsa-mir-28	1	22	5AG 	
+1076	51	hsa-mir-5588	2	20		
+47	94	hsa-mir-1273g	6	18	7CT 	
+1037	38	hsa-let-7g	6	22		
+1194	85	hsa-mir-1303	1	23		
+2	92	hsa-mir-200b	3	21		
+1190	78	hsa-mir-378a	1	18		
+891	47	hsa-mir-26b	3	22		
+829	45	hsa-mir-216b	1	20		
+6	96	hsa-mir-551a	1	20		
+1030	48	hsa-mir-425	71	21		
+1188	95	hsa-mir-143	238	20		
+818	82	hsa-mir-1301	5	23		
+1037	42	hsa-let-7g	28	18		
+1079	88	hsa-mir-28	1	22	11TG 	
+1069	44	hsa-mir-16-2	2	20	11TG 	
+4	85	hsa-mir-429	1	19		
+82	95	hsa-mir-92b	1	24		
+1190	77	hsa-mir-378a	9	24		
+1190	77	hsa-mir-378a	79	23	23CA 	
+4	89	hsa-mir-429	1	18	18TA 	
+2	91	hsa-mir-200b	1	24	24GA 	
+1160	50	hsa-mir-449b	1	25		
+883	90	hsa-mir-2355	3	22		
+1031	50	hsa-mir-191	1	26		
+1159	50	hsa-mir-449a	2	21		
+1079	88	hsa-mir-28	1	23	3CT 	
+891	46	hsa-mir-26b	2	29		
+1134	39	hsa-mir-4454	8	20		
+1197	55	hsa-mir-146a	2	23	18GA 	
+818	82	hsa-mir-1301	2	20		
+1164	50	hsa-mir-582	1	18		
+1079	48	hsa-mir-28	1	21	14TA 	
+11	46	hsa-mir-5697	1	20		
+1190	77	hsa-mir-378a	5	21	7CT 	
+869	47	hsa-mir-1246	17	18		
+829	45	hsa-mir-216b	10	22		
+66	82	hsa-mir-197	1	24	1TC 	
+891	49	hsa-mir-26b	1	18	18TA 	
+1197	55	hsa-mir-146a	2	20	18GA 	
+1124	49	hsa-mir-577	1	23	13TG 	
+1037	39	hsa-let-7g	650	23		
+1079	88	hsa-mir-28	66	23		
+1030	89	hsa-mir-425	9	21		
+1079	88	hsa-mir-28	10	21		
+1190	78	hsa-mir-378a	3	21		
+1069	86	hsa-mir-16-2	5	21		
+1209	92	hsa-mir-340	2	25		
+1069	85	hsa-mir-16-2	1	24		
+1069	44	hsa-mir-16-2	419	24		
+1190	78	hsa-mir-378a	1	21	21CA 	
+1030	53	hsa-mir-425	10	20		
+98	64	hsa-mir-214	2	23		
+1078	38	hsa-mir-1248	1	22		
+61	83	hsa-mir-760	1	24		
+1030	88	hsa-mir-425	2	23		
+1099	37	hsa-mir-1255b-1	2	22		
+1077	35	hsa-mir-548aq	1	20		
+1202	92	hsa-mir-378e	1	19		
+42	77	hsa-mir-4421	2	19		
+1069	52	hsa-mir-16-2	1	18	17GA 	
+1069	86	hsa-mir-16-2	3	18		
+1030	52	hsa-mir-425	1	19		
+1068	92	hsa-mir-15b	28	22		
+1068	59	hsa-mir-15b	1	18	16CA 	
+1079	48	hsa-mir-28	1	22	14TA 	
+1030	89	hsa-mir-425	29	20		
+80	45	hsa-mir-190b	9	23		
+1079	94	hsa-mir-28	1	18	18GA 	
+1197	55	hsa-mir-146a	2	20		
+108	98	hsa-mir-181a-1	2	21		
+818	83	hsa-mir-1301	1	23		
+1203	97	hsa-mir-3912	1	23		
+1068	83	hsa-mir-15b	3	18	11GA 	
+119	51	hsa-mir-664a	1	18		
+1030	52	hsa-mir-425	1	23		
+1160	53	hsa-mir-449b	1	23		
+1025	35	hsa-mir-1226	1	35		
+62	37	hsa-mir-378g	1	19		
+1189	50	hsa-mir-145	1	27		
+828	53	hsa-mir-216a	6	22		
+1187	50	hsa-mir-584	6	22		
+818	83	hsa-mir-1301	1	22		
+66	82	hsa-mir-197	1	24	4AG 	
+3	88	hsa-mir-200a	3	22		
+1068	92	hsa-mir-15b	2	21		
+883	45	hsa-mir-2355	3	24		
+891	46	hsa-mir-26b	2	22	5AG 	
+66	82	hsa-mir-197	2	24	6CA 	
+1101	59	hsa-mir-574	1	24	9TG 	
+1021	86	hsa-mir-128-2	8	19		
+1170	50	hsa-mir-9-2	58	22		
+82	54	hsa-mir-92b	1	24		
+1166	44	hsa-mir-4804	1	22	6CG 	
+129	37	hsa-mir-1537	1	22		
+1021	86	hsa-mir-128-2	18	20		
+112	88	hsa-mir-29c	55	23		
+1195	43	hsa-mir-378h	3	21	12TA 	
+1172	52	hsa-mir-2277	1	18		
+1170	88	hsa-mir-9-2	9	24		
+119	47	hsa-mir-664a	1	22		
+1037	38	hsa-let-7g	3	24		
+82	94	hsa-mir-92b	1	24	24GA 	
+59	90	hsa-mir-186	1	21		
+1194	84	hsa-mir-1303	1	22		
+869	46	hsa-mir-1246	7	19		
+66	82	hsa-mir-197	1	23	13TC 	
+1202	92	hsa-mir-378e	1	20	18GA 	
+59	89	hsa-mir-186	1	19		
+1190	77	hsa-mir-378a	1	19	8TG 	
+1030	50	hsa-mir-425	1	24		
+1190	79	hsa-mir-378a	1	19	8GC 	
+823	50	hsa-mir-548ad	1	21		
+10	56	hsa-mir-34a	2	21		
+1068	55	hsa-mir-15b	2	22		
+108	98	hsa-mir-181a-1	4	20		
+1155	94	hsa-mir-580	1	24		
+59	48	hsa-mir-186	1	24		
+1068	83	hsa-mir-15b	5	18		
+1030	49	hsa-mir-425	6	21		
+59	50	hsa-mir-186	12	23		
+1194	37	hsa-mir-1303	1	18	11TG 	
+1042	103	hsa-mir-1284	1	21		
+1172	93	hsa-mir-2277	1	18		
+3	50	hsa-mir-200a	1	22		
+1164	49	hsa-mir-582	2	22		
+1069	87	hsa-mir-16-2	1	20		
+1037	39	hsa-let-7g	39	19		
+11	84	hsa-mir-5697	1	24		
+70	49	hsa-mir-942	2	21		
+1079	88	hsa-mir-28	3	22	11TC 	
+48	84	hsa-mir-4781	1	22		
+1030	49	hsa-mir-425	1	25		
+70	47	hsa-mir-942	1	19		
+1068	55	hsa-mir-15b	2	21		
+891	47	hsa-mir-26b	1	23		
+10	57	hsa-mir-34a	1	22		
+82	95	hsa-mir-92b	1	21	18CA 	
+1129	45	hsa-mir-4799	1	20		
+1068	54	hsa-mir-15b	1	20	17TG 	
+1190	39	hsa-mir-378a	1	22		
+1184	44	hsa-mir-874	1	23		
+132	47	hsa-mir-4677	2	19		
+1190	77	hsa-mir-378a	15	22		
+59	92	hsa-mir-186	1	20		
+61	82	hsa-mir-760	2	18		
+883	89	hsa-mir-2355	2	22		
+119	45	hsa-mir-664a	1	21		
+45	67	hsa-mir-1273f	1	20	3GC 	
+905	99	hsa-mir-4440	1	22		
+112	50	hsa-mir-29c	3	21		
+891	47	hsa-mir-26b	1	20		
+1030	88	hsa-mir-425	18	24		
+883	88	hsa-mir-2355	1	25		
+82	96	hsa-mir-92b	1	20		
+112	52	hsa-mir-29c	6	23		
+1030	48	hsa-mir-425	175	22		
+1189	50	hsa-mir-145	5	21		
+822	64	hsa-mir-4430	1	19		
+900	91	hsa-mir-4777	1	24		
+1188	98	hsa-mir-143	1	19	14AC 	
+1109	49	hsa-mir-5096	1	20	7AG 	
+1069	86	hsa-mir-16-2	1	23	11CA 	
+119	84	hsa-mir-664a	1	24		
+117	61	hsa-mir-215	1	19		
+891	46	hsa-mir-26b	95	20		
+1154	95	hsa-mir-579	1	22		
+1042	104	hsa-mir-1284	1	21		
+869	45	hsa-mir-1246	16	20		
+1109	61	hsa-mir-5096	1	20		
+1068	54	hsa-mir-15b	1	18	17TA 	
+1030	90	hsa-mir-425	3	19		
+3	88	hsa-mir-200a	1	20		
+1031	53	hsa-mir-191	1	20		
+1031	50	hsa-mir-191	16611	23		
+1139	85	hsa-mir-1305	4	22		
+1106	59	hsa-mir-1269a	9	23		
+891	81	hsa-mir-26b	1	22		
+1079	48	hsa-mir-28	1	22	14TC 	
+59	50	hsa-mir-186	13	19		
+82	95	hsa-mir-92b	16	18		
+1116	90	hsa-mir-576	3	20		
+1076	50	hsa-mir-5588	1	21		
+1079	88	hsa-mir-28	1	21	11TG 	
+1030	55	hsa-mir-425	3	18		
+1068	92	hsa-mir-15b	1	23	23GA 	
+1188	95	hsa-mir-143	1	18	18GC 	
+1190	79	hsa-mir-378a	9	19		
+119	83	hsa-mir-664a	48	24		
+1079	88	hsa-mir-28	1	22	13AC 	
+119	85	hsa-mir-664a	1	23		
+1188	95	hsa-mir-143	1	22	18GC 	
+59	54	hsa-mir-186	4	21		
+82	95	hsa-mir-92b	107	20		
+1068	92	hsa-mir-15b	1	24		
+26	86	hsa-mir-378f	10	20		
+1172	93	hsa-mir-2277	3	20		
+1030	48	hsa-mir-425	7	27		
+87	44	hsa-mir-5187	1	23	23GA 	
+1170	50	hsa-mir-9-2	15	24		
+1078	39	hsa-mir-1248	1	34		
+1198	82	hsa-mir-103a-1	4	25		
+1190	77	hsa-mir-378a	3	18	18AC 	
+1170	54	hsa-mir-9-2	1	19		
+1037	40	hsa-let-7g	2	22		
+891	46	hsa-mir-26b	2	22	4AC 	
+1161	51	hsa-mir-449c	2	24		
+1069	45	hsa-mir-16-2	6	23		
+1069	44	hsa-mir-16-2	1	25	25GA 	
+1031	51	hsa-mir-191	629	22		
+1041	83	hsa-mir-3136	1	23		
+1030	48	hsa-mir-425	1797	24		
+1134	40	hsa-mir-4454	9	20		
+1106	59	hsa-mir-1269a	1	22	18CA 	
+1079	88	hsa-mir-28	1	22	1CA 	
+1037	43	hsa-let-7g	1	19		
+56	44	hsa-mir-101-1	5	21		
+1190	77	hsa-mir-378a	5	21	6AC 	
+59	48	hsa-mir-186	2	23		
+1068	54	hsa-mir-15b	1	20	13AT 	
+1069	44	hsa-mir-16-2	12	25	23TA 	
+1124	49	hsa-mir-577	1	22	17TC 	
+1190	77	hsa-mir-378a	2	21	21GA 	
+1190	77	hsa-mir-378a	4	21	15CA 	
+1009	68	hsa-mir-378b	1	19		
+82	95	hsa-mir-92b	2	22		
+1164	50	hsa-mir-582	4	24		
+1190	78	hsa-mir-378a	447	20		
+1204	58	hsa-mir-5003	1	18	12TA 	
+1124	49	hsa-mir-577	1	24	8AC 	
+1190	77	hsa-mir-378a	5	21	12AG 	
+891	46	hsa-mir-26b	1	23	9AC 	
+1190	77	hsa-mir-378a	1	21	7CG 	
+1189	50	hsa-mir-145	1	18		
+59	49	hsa-mir-186	5732	22		
+1190	77	hsa-mir-378a	5	21	12AC 	
+1031	50	hsa-mir-191	180	21		
+10	56	hsa-mir-34a	3	24		
+112	90	hsa-mir-29c	1	21		
+1194	86	hsa-mir-1303	1	23		
+1188	95	hsa-mir-143	4	18		
+1091	83	hsa-mir-95	1	19		
+132	47	hsa-mir-4677	1	23		
+1188	98	hsa-mir-143	6	18		
+1031	50	hsa-mir-191	992	24		
+80	45	hsa-mir-190b	3	20		
+1068	82	hsa-mir-15b	5	18	12GA 	
+891	46	hsa-mir-26b	33	23	23GA 	
+61	83	hsa-mir-760	1	19	19GA 	
+60	48	hsa-mir-4423	1	20		
+1106	59	hsa-mir-1269a	1	23	13TG 	
+1101	59	hsa-mir-574	12	24		
+121	99	hsa-mir-4742	5	21		
+1164	87	hsa-mir-582	5	20		
+66	82	hsa-mir-197	1	24	5CA 	
+1084	98	hsa-mir-922	1	18		
+1079	48	hsa-mir-28	1	21	8TG 	
+1069	86	hsa-mir-16-2	36	23		
+1079	48	hsa-mir-28	1	21	5AC 	
+1021	86	hsa-mir-128-2	2	22	22CA 	
+883	87	hsa-mir-2355	1	22		
+66	82	hsa-mir-197	1	24	1TA 	
+1197	55	hsa-mir-146a	2	19		
+1068	54	hsa-mir-15b	2	22	17TG 	
+10	56	hsa-mir-34a	12	23		
+1197	55	hsa-mir-146a	8	23		
+1208	82	hsa-mir-1229	1	22		
+1190	77	hsa-mir-378a	12	21	2CT 	
+82	95	hsa-mir-92b	1	21	18CT 	
+1190	78	hsa-mir-378a	1	20	17AC 	
+1068	54	hsa-mir-15b	1	26	12CA 	
+1021	86	hsa-mir-128-2	88	21		
+70	47	hsa-mir-942	1	21		
+132	84	hsa-mir-4677	1	21		
+1170	88	hsa-mir-9-2	12	22		
+818	83	hsa-mir-1301	1	24		
+59	88	hsa-mir-186	6	23		
+1068	54	hsa-mir-15b	157	23		
+1188	98	hsa-mir-143	2	18	18CA 	
+1161	52	hsa-mir-449c	3	23		
+1021	86	hsa-mir-128-2	2	23	22CA 	
+1164	87	hsa-mir-582	10	24		
+1031	53	hsa-mir-191	1	21		
+1030	87	hsa-mir-425	29	19		
+891	45	hsa-mir-26b	1	24	1GC 	
+66	82	hsa-mir-197	4	20		
+1030	49	hsa-mir-425	4	20		
+891	44	hsa-mir-26b	1	24	2GA 	
+60	47	hsa-mir-4423	13	21		
+39	91	hsa-mir-30c-1	1	19		
+1190	77	hsa-mir-378a	3	21	4GC 	
+1188	95	hsa-mir-143	1	22	7GC 	
+892	74	hsa-mir-375	2	22		
+883	90	hsa-mir-2355	1	24		
+1037	39	hsa-let-7g	1177	21		
+1188	95	hsa-mir-143	4	23		
+59	49	hsa-mir-186	6231	23		
+82	95	hsa-mir-92b	2	21	12TC 	
+1069	49	hsa-mir-16-2	26	19		
+1189	50	hsa-mir-145	6	25		
+1068	56	hsa-mir-15b	1	20		
+60	48	hsa-mir-4423	1	22		
+891	81	hsa-mir-26b	4	19		
+62	36	hsa-mir-378g	19	20		
+3	88	hsa-mir-200a	2	22	17CA 	
+1194	68	hsa-mir-1303	1	20	15AT 	
+113	45	hsa-mir-29b-2	1	23		
+1190	78	hsa-mir-378a	1	20	15AG 	
+65	69	hsa-mir-553	1	18	12AG 	
+1164	87	hsa-mir-582	1	25		
+1155	95	hsa-mir-580	8	22		
+1037	43	hsa-let-7g	80	18		
+61	82	hsa-mir-760	1	21		
+1130	94	hsa-mir-3140	1	22		
+818	46	hsa-mir-1301	1	22		
+59	50	hsa-mir-186	116	22		
+66	82	hsa-mir-197	1	21	3CA 	
+1190	77	hsa-mir-378a	3	21	8TG 	
+1188	97	hsa-mir-143	1	18		
+1190	77	hsa-mir-378a	2	21	5GC 	
+1170	50	hsa-mir-9-2	3007	23		
+1069	49	hsa-mir-16-2	46	20	18TA 	
+1190	77	hsa-mir-378a	23	19		
+1114	80	hsa-mir-3684	2	20		
+1069	44	hsa-mir-16-2	1	24	1TC 	
+1068	54	hsa-mir-15b	1	26		
+39	90	hsa-mir-30c-1	4	20		
+66	82	hsa-mir-197	2	24	3CA 	
+1189	88	hsa-mir-145	1	22		
+1079	89	hsa-mir-28	5	21		
+82	96	hsa-mir-92b	1	19		
+1172	92	hsa-mir-2277	1	21		
+1174	84	hsa-mir-548p	1	23		
+117	61	hsa-mir-215	1	23		
+123	92	hsa-mir-3620	1	22		
+1190	78	hsa-mir-378a	3	20	13TG 	
+66	82	hsa-mir-197	1	24	13TG 	
+87	44	hsa-mir-5187	17	22		
+1030	49	hsa-mir-425	281	22		
+869	46	hsa-mir-1246	10	18		
+82	96	hsa-mir-92b	1	22	22GA 	
+66	85	hsa-mir-197	3	21		
+1159	50	hsa-mir-449a	1	23		
+828	53	hsa-mir-216a	1	25		
+120	107	hsa-mir-320b-2	1	18		
+883	88	hsa-mir-2355	2	21		
+70	47	hsa-mir-942	1	21	8TC 	
+1124	49	hsa-mir-577	1	24	2TA 	
+891	46	hsa-mir-26b	1	22	16AT 	
+1190	78	hsa-mir-378a	1	18	18AC 	
+1079	88	hsa-mir-28	1	23	7AG 	
+1079	48	hsa-mir-28	245	21		
+1166	43	hsa-mir-4804	1	23	7CG 	
+1030	48	hsa-mir-425	151	19		
+891	46	hsa-mir-26b	1	22	18AC 	
+1198	45	hsa-mir-103a-1	2	23		
+1030	89	hsa-mir-425	3	18		
+829	45	hsa-mir-216b	1	23		
+891	46	hsa-mir-26b	1	22	9AT 	
+1031	55	hsa-mir-191	5	18		
+891	46	hsa-mir-26b	1	22	9AC 	
+105	84	hsa-mir-1278	2	22		
+82	95	hsa-mir-92b	1	21	11GT 	
+1069	43	hsa-mir-16-2	2	21		
+1031	92	hsa-mir-191	3	19		
+112	86	hsa-mir-29c	1	25		
+1130	93	hsa-mir-3140	1	22		
+1079	49	hsa-mir-28	3	21		
+1069	86	hsa-mir-16-2	1	23	17TA 	
+827	69	hsa-mir-217	5	23		
+1068	54	hsa-mir-15b	1	22	15GA 	
+1030	48	hsa-mir-425	951	25		
+1021	86	hsa-mir-128-2	1	20	6GA 	
+1101	95	hsa-mir-574	17	22		
+87	86	hsa-mir-5187	21	21		
+1190	77	hsa-mir-378a	7	21	7CA 	
+1170	50	hsa-mir-9-2	3	25		
+891	46	hsa-mir-26b	1	22	15GA 	
+1124	49	hsa-mir-577	42	24		
+1068	58	hsa-mir-15b	1	19	17CA 	
+891	46	hsa-mir-26b	1	22	7TG 	
+1116	89	hsa-mir-576	1	18		
+1031	92	hsa-mir-191	1	23		
+112	50	hsa-mir-29c	1	20		
+1030	89	hsa-mir-425	35	23		
+891	47	hsa-mir-26b	7	21		
+1190	77	hsa-mir-378a	4	21	14TA 	
+1124	49	hsa-mir-577	3	23		
+67	43	hsa-mir-4256	1	20		
+120	106	hsa-mir-320b-2	6	21		
+1124	49	hsa-mir-577	1	21	2TG 	
+119	46	hsa-mir-664a	3	23		
+822	64	hsa-mir-4430	1	18	18TA 	
+823	50	hsa-mir-548ad	1	21	6TG 	
+1037	39	hsa-let-7g	114	20		
+120	104	hsa-mir-320b-2	1	24		
+105	83	hsa-mir-1278	1	22		
+891	48	hsa-mir-26b	2	20		
+33	54	hsa-mir-3605	1	23		
+60	83	hsa-mir-4423	1	20		
+1190	77	hsa-mir-378a	3	21	1AT 	
+87	87	hsa-mir-5187	1	20		
+1030	89	hsa-mir-425	89	19		
+1166	43	hsa-mir-4804	1	21	7CG 	
+1076	53	hsa-mir-5588	1	18	1TC 	
+59	54	hsa-mir-186	2	18		
+112	51	hsa-mir-29c	1	20		
+59	53	hsa-mir-186	1	19		
+1058	46	hsa-mir-5682	2	23		
+4	89	hsa-mir-429	1	18		
+1170	88	hsa-mir-9-2	47	23		
+80	45	hsa-mir-190b	3	21		
+891	45	hsa-mir-26b	1	23		
+1068	92	hsa-mir-15b	1	22	3AC 	
+1155	95	hsa-mir-580	1	23		
+1101	95	hsa-mir-574	1	21	21CT 	
+1188	95	hsa-mir-143	1	20	12AG 	
+56	81	hsa-mir-101-1	2	26		
+1031	50	hsa-mir-191	1	27		
+132	84	hsa-mir-4677	1	23		
+1068	82	hsa-mir-15b	3	18	3TA 	
+61	86	hsa-mir-760	1	18		
+66	82	hsa-mir-197	60	21		
+1031	92	hsa-mir-191	1	18		
+117	61	hsa-mir-215	10	24		
+818	82	hsa-mir-1301	1	19		
+1031	92	hsa-mir-191	7	21		
+1037	39	hsa-let-7g	10487	22		
+1189	50	hsa-mir-145	3	19		
+1154	59	hsa-mir-579	2	20		
+1079	48	hsa-mir-28	276	22		
+1079	88	hsa-mir-28	1	22	9TC 	
+119	45	hsa-mir-664a	29	24		
+1031	51	hsa-mir-191	9	24		
+66	83	hsa-mir-197	4	23		
+1031	51	hsa-mir-191	2	18		
+1025	88	hsa-mir-1226	3	22		
+89	50	hsa-mir-556	1	22	22GA 	
+1190	77	hsa-mir-378a	4	21	12AT 	
+66	81	hsa-mir-197	1	25		
+1009	68	hsa-mir-378b	1	19	7CA 	
+56	81	hsa-mir-101-1	1	25		
+845	45	hsa-mir-3127	2	22		
+59	88	hsa-mir-186	1	20		
+119	45	hsa-mir-664a	1	33		
+66	82	hsa-mir-197	1	23	13TG 	
+39	51	hsa-mir-30c-1	1	29	25GA 	
+1190	77	hsa-mir-378a	4	21	15CG 	
+880	81	hsa-mir-3129	1	21		
+1021	86	hsa-mir-128-2	1	21	2CA 	
+60	83	hsa-mir-4423	1	21		
+1190	77	hsa-mir-378a	1	22	5GT 	
+1101	58	hsa-mir-574	1	22		
+1037	96	hsa-let-7g	4	20		
+1190	77	hsa-mir-378a	9061	21		
+1190	77	hsa-mir-378a	28	21	1AG 	
+1030	49	hsa-mir-425	7	18		
+1079	48	hsa-mir-28	18	23		
+869	45	hsa-mir-1246	8	19		
+13	74	hsa-mir-4632	1	22		
+1068	54	hsa-mir-15b	2	22	18TA 	
+66	82	hsa-mir-197	655	24		
+1031	52	hsa-mir-191	9	21		
+1091	83	hsa-mir-95	112	22		
+1050	45	hsa-mir-548ab	1	21		
+1190	77	hsa-mir-378a	16	22	22CA 	
+1091	83	hsa-mir-95	1	20		
+59	90	hsa-mir-186	11	22		
+1160	50	hsa-mir-449b	1	24		
+61	60	hsa-mir-760	1	18	13CG 	
+61	82	hsa-mir-760	2	22		
+59	49	hsa-mir-186	16	19		
+33	100	hsa-mir-3605	2	23		
+1079	88	hsa-mir-28	1	20		
+100	103	hsa-mir-199a-2	2	25		
+1203	93	hsa-mir-3912	1	20		
+1134	40	hsa-mir-4454	77	19		
+1030	48	hsa-mir-425	34	20		
+1074	95	hsa-mir-4448	2	18	6CT 	
+59	88	hsa-mir-186	19	21		
+59	51	hsa-mir-186	1	21		
+1155	94	hsa-mir-580	1	23		
+1190	76	hsa-mir-378a	1	22	1CA 	
+36	73	hsa-mir-5581	1	21		
+132	84	hsa-mir-4677	5	22		
+59	49	hsa-mir-186	162	26		
+1037	42	hsa-let-7g	348	19		
+1194	85	hsa-mir-1303	1	21		
+1161	51	hsa-mir-449c	1	23		
+1106	59	hsa-mir-1269a	2	22		
+829	45	hsa-mir-216b	1	19		
+1190	77	hsa-mir-378a	7	21	14TG 	
+1069	86	hsa-mir-16-2	4	22		
+862	84	hsa-mir-128-1	1	23		
+1021	86	hsa-mir-128-2	2	19	16CA 	
+1190	77	hsa-mir-378a	17	23	23CT 	
+1079	48	hsa-mir-28	4	20		
+59	91	hsa-mir-186	1	18		
+45	45	hsa-mir-1273f	1	18	10GA 	
+59	89	hsa-mir-186	1	20		
+862	84	hsa-mir-128-1	1	23	23TG 	
+87	44	hsa-mir-5187	1	22	12AC 	
+1203	98	hsa-mir-3912	1	24		
+1068	54	hsa-mir-15b	1	19		
+1188	99	hsa-mir-143	1	18	17CT 	
+1079	89	hsa-mir-28	49	22		
+70	49	hsa-mir-942	1	19		
+1068	54	hsa-mir-15b	1	22	7CT 	
+56	45	hsa-mir-101-1	1	20		
+1101	59	hsa-mir-574	4	19		
+1079	89	hsa-mir-28	1	20		
+862	84	hsa-mir-128-1	8	22		
+1116	90	hsa-mir-576	1	21		
+29	66	hsa-mir-1976	1	21		
+1202	92	hsa-mir-378e	3	18	18GT 	
+818	87	hsa-mir-1301	1	20		
+1190	77	hsa-mir-378a	3	18		
+64	93	hsa-mir-137	12	23		
+1101	59	hsa-mir-574	8	25		
+129	74	hsa-mir-1537	16	22		
+1130	91	hsa-mir-3140	1	23		
+1116	89	hsa-mir-576	6	22		
+47	94	hsa-mir-1273g	1	18		
+120	107	hsa-mir-320b-2	1	23		
+1030	88	hsa-mir-425	3	21		
+1197	55	hsa-mir-146a	125	22		
+1188	100	hsa-mir-143	8	18	18GT 	
+1078	53	hsa-mir-1248	1	32		
+1188	95	hsa-mir-143	1	19		
+1159	89	hsa-mir-449a	1	21		
+1197	55	hsa-mir-146a	1	23	23GT 	
+82	95	hsa-mir-92b	6	23	23GT 	
+112	50	hsa-mir-29c	1	25		
+1037	95	hsa-let-7g	2	21		
+862	49	hsa-mir-128-1	1	21		
+1190	77	hsa-mir-378a	2	21	5GA 	
+1030	53	hsa-mir-425	9	19		
+82	95	hsa-mir-92b	188	21		
+1068	54	hsa-mir-15b	1	22	15GC 	
+1197	55	hsa-mir-146a	8	21		
+1190	77	hsa-mir-378a	4	21	8TC 	
+1197	55	hsa-mir-146a	1	25	25GA 	
+82	95	hsa-mir-92b	5	18	18CA 	
+82	95	hsa-mir-92b	1	19		
+1190	77	hsa-mir-378a	2	21	18AG 	
+1190	78	hsa-mir-378a	3	22	22CA 	
+47	104	hsa-mir-1273g	1	18	7AG 	
+891	46	hsa-mir-26b	64	23		
+1190	77	hsa-mir-378a	1	21	4GT 	
+1079	48	hsa-mir-28	2	24		
+1203	99	hsa-mir-3912	3	23		
+1091	84	hsa-mir-95	4	21		
+47	37	hsa-mir-1273g	1	18		
+891	46	hsa-mir-26b	1	22	3CT 	
+1030	48	hsa-mir-425	13	18		
+61	83	hsa-mir-760	2	21		
+1127	44	hsa-mir-3139	1	22		
+4	85	hsa-mir-429	25	22		
+70	47	hsa-mir-942	11	22		
+1030	90	hsa-mir-425	1	22		
+1170	87	hsa-mir-9-2	30	24		
+1079	88	hsa-mir-28	1	22	18CG 	
+1069	43	hsa-mir-16-2	1	25		
+1058	79	hsa-mir-5682	1	21		
+33	102	hsa-mir-3605	1	21		
+891	46	hsa-mir-26b	3	24		
+1011	45	hsa-mir-4270	1	24		
+1190	77	hsa-mir-378a	1	24	14TC 	
+89	50	hsa-mir-556	1	24	22GA 	
+891	46	hsa-mir-26b	2	22	13AG 	
+129	75	hsa-mir-1537	3	21		
+1031	53	hsa-mir-191	3	19		
+1159	50	hsa-mir-449a	20	22		
+1194	84	hsa-mir-1303	1	20		
+1190	77	hsa-mir-378a	13	21	16AG 	
+1109	55	hsa-mir-5096	1	18	8TC 	
+4	86	hsa-mir-429	1	21		
+1190	77	hsa-mir-378a	2	23		
+82	95	hsa-mir-92b	15	23	23GA 	
+82	95	hsa-mir-92b	8	22	22CA 	
+1068	54	hsa-mir-15b	1	22	6GC 	
+59	89	hsa-mir-186	7	23		
+1101	59	hsa-mir-574	10	23		
+62	36	hsa-mir-378g	1	21		
+1166	43	hsa-mir-4804	2	22	7CG 	
+66	82	hsa-mir-197	1	24	13TC 	
+1197	57	hsa-mir-146a	1	20		
+1170	49	hsa-mir-9-2	1	24		
+1079	48	hsa-mir-28	1	18	18TC 	
+1190	77	hsa-mir-378a	2	21	11GC 	
+1154	59	hsa-mir-579	2	24		
+1134	40	hsa-mir-4454	32	18		
+1188	95	hsa-mir-143	38	22		
+59	52	hsa-mir-186	2	19		
+1030	89	hsa-mir-425	2	24		
+121	97	hsa-mir-4742	2	23		
+117	61	hsa-mir-215	7	22		
+910	49	hsa-mir-149	9	21		
+59	49	hsa-mir-186	389	24		
+82	95	hsa-mir-92b	2	23	10CT 	
+829	45	hsa-mir-216b	3	21		
+3	88	hsa-mir-200a	68	23		
+1037	39	hsa-let-7g	2	26		
+1068	54	hsa-mir-15b	460	22		
+1021	86	hsa-mir-128-2	2	18		
+1202	92	hsa-mir-378e	1	18	18GC 	
+1124	50	hsa-mir-577	2	23		
+1077	35	hsa-mir-548aq	1	24		
+1079	88	hsa-mir-28	17	23	23GA 	
+883	88	hsa-mir-2355	9	23		
+1030	50	hsa-mir-425	12	22		
+1124	49	hsa-mir-577	28	22		
+66	82	hsa-mir-197	18	23		
+883	89	hsa-mir-2355	1	24		
+883	90	hsa-mir-2355	1	23		
+1068	82	hsa-mir-15b	8	18		
+891	46	hsa-mir-26b	1	20	8AC 	
+891	46	hsa-mir-26b	1	22	4AT 	
+1116	50	hsa-mir-576	1	21		
+59	55	hsa-mir-186	1	20		
+1190	76	hsa-mir-378a	17	22		
+1031	51	hsa-mir-191	4	20		
+119	84	hsa-mir-664a	1	23		
+1068	54	hsa-mir-15b	1	20	13AG 	
+891	46	hsa-mir-26b	1	22	1TC 	
+818	82	hsa-mir-1301	1	22		
+827	69	hsa-mir-217	1	24		
+66	82	hsa-mir-197	2	22		
+59	48	hsa-mir-186	27	21		
+882	78	hsa-mir-3130-1	2	21		
+1170	50	hsa-mir-9-2	77	21		
+66	82	hsa-mir-197	2	24	7AC 	
+59	53	hsa-mir-186	2	18		
+113	81	hsa-mir-29b-2	1	23		
+1030	88	hsa-mir-425	4	22		
+1031	52	hsa-mir-191	1	19		
+1188	99	hsa-mir-143	2	18		
+1021	86	hsa-mir-128-2	1	18	18CA 	
+1069	44	hsa-mir-16-2	2	25	25GT 	
+129	72	hsa-mir-1537	1	21		
+1009	69	hsa-mir-378b	1	18	1CA 	
+1079	88	hsa-mir-28	1	23	11TC 	
+57	39	hsa-mir-3117	1	18	10GA 	
+891	46	hsa-mir-26b	1	22	15GC 	
+1031	50	hsa-mir-191	28	25		
+1079	88	hsa-mir-28	1	18	11TA 	
+1170	87	hsa-mir-9-2	19	23		
+1170	51	hsa-mir-9-2	6	22		
+56	44	hsa-mir-101-1	2	23		
+1037	40	hsa-let-7g	1	19		
+1116	50	hsa-mir-576	3	23		
+1079	91	hsa-mir-28	1	19		
+129	39	hsa-mir-1537	2	22		
+827	68	hsa-mir-217	1	25		
+1043	71	hsa-mir-4444-2	1	27		
+1164	51	hsa-mir-582	6	20		
+891	46	hsa-mir-26b	218	21		
+119	45	hsa-mir-664a	1	22		
+1031	50	hsa-mir-191	23	18		
+1030	50	hsa-mir-425	125	23		
+891	46	hsa-mir-26b	1	23	16AG 	
+1187	89	hsa-mir-584	1	20		
+1170	88	hsa-mir-9-2	1	21		
+1124	49	hsa-mir-577	2	22	22GA 	
+1058	79	hsa-mir-5682	12	22		
+26	86	hsa-mir-378f	1	23	14CT 	
+1031	54	hsa-mir-191	3	18		
+121	35	hsa-mir-4742	1	24		
+883	90	hsa-mir-2355	1	20		
+1042	103	hsa-mir-1284	2	22		
+1116	89	hsa-mir-576	13	21		
+80	45	hsa-mir-190b	13	22		
+26	86	hsa-mir-378f	10	21	14CT 	
+1139	86	hsa-mir-1305	1	21		
+1124	49	hsa-mir-577	1	22	14TC 	
+1079	48	hsa-mir-28	1	22	5AG 	
+1190	77	hsa-mir-378a	3	21	2CA 	
+1069	49	hsa-mir-16-2	4	20	17GC 	
+1170	52	hsa-mir-9-2	2	21		
+1069	50	hsa-mir-16-2	2	18		
+1194	74	hsa-mir-1303	1	19	9AT 	
+891	46	hsa-mir-26b	1	21	3CA 	
+66	43	hsa-mir-197	1	18		
+1190	77	hsa-mir-378a	2	21	8TA 	
+1166	43	hsa-mir-4804	1	19	7CG 	
+891	49	hsa-mir-26b	9	19		
+1023	57	hsa-mir-138-1	1	24		
+1101	59	hsa-mir-574	2	20		
+68	51	hsa-mir-548ac	1	18		
+66	82	hsa-mir-197	5	24	8CA 	
+1079	53	hsa-mir-28	4	18	18TA 	
+1074	95	hsa-mir-4448	2	18	6CG 	
+59	88	hsa-mir-186	1	22		
+1079	53	hsa-mir-28	1	18		
+882	78	hsa-mir-3130-1	2	23		
+910	49	hsa-mir-149	1	23	23CA 	
+891	46	hsa-mir-26b	1	23	10TG 	
+1164	51	hsa-mir-582	3	23		
+1079	48	hsa-mir-28	1	18		
+82	95	hsa-mir-92b	1	20	2AC 	
+1079	48	hsa-mir-28	1	22	8TA 	
+1190	77	hsa-mir-378a	7	21	3TC 	
+1188	95	hsa-mir-143	1	20	1TC 	
+89	89	hsa-mir-556	1	21		
+1037	40	hsa-let-7g	4	20		
+59	50	hsa-mir-186	1	20		
+1030	50	hsa-mir-425	4	21		
+1079	48	hsa-mir-28	4	19		
+59	89	hsa-mir-186	3	22		
+1188	100	hsa-mir-143	4	18	18GA 	
+1164	50	hsa-mir-582	26	21		
+119	45	hsa-mir-664a	5	23		
+1037	40	hsa-let-7g	32	21		
+1068	82	hsa-mir-15b	1	18	11CT 	
+891	45	hsa-mir-26b	3	23	1GC 	
+59	49	hsa-mir-186	1166	20		
+891	46	hsa-mir-26b	1	22	7TC 	
+1203	97	hsa-mir-3912	7	24		
+1031	93	hsa-mir-191	10	20		
+1190	77	hsa-mir-378a	3	21	10GT 	
+1069	51	hsa-mir-16-2	2	18		
+1190	77	hsa-mir-378a	1	21	17GC 	
+1170	50	hsa-mir-9-2	15	20		
+59	49	hsa-mir-186	1	27		
+1037	41	hsa-let-7g	2	19		
+1170	86	hsa-mir-9-2	1	25		
+70	49	hsa-mir-942	1	18		
+1021	88	hsa-mir-128-2	1	19		
+119	45	hsa-mir-664a	1	25		
+1069	87	hsa-mir-16-2	1	21		
+112	88	hsa-mir-29c	30	22		
+1079	88	hsa-mir-28	1	18		
+1030	53	hsa-mir-425	75	18		
+1068	59	hsa-mir-15b	2	18	12TC 	
+1068	59	hsa-mir-15b	1	18	18TG 	
+891	46	hsa-mir-26b	1429	22		
+1197	55	hsa-mir-146a	1	19	17TA 	
+1069	87	hsa-mir-16-2	9	22		
+891	46	hsa-mir-26b	3	19		
+1164	50	hsa-mir-582	2	23		
+1164	50	hsa-mir-582	1	19		
+1101	59	hsa-mir-574	7	21		
+1079	88	hsa-mir-28	1	22	11TA 	
+112	88	hsa-mir-29c	6	20		
+1031	51	hsa-mir-191	136	21		
+1034	93	hsa-mir-566	1	19	14GA 	
+1190	77	hsa-mir-378a	4	21	16AC 	
+1190	77	hsa-mir-378a	1	21	13GT 	
+1068	54	hsa-mir-15b	1	19	10AG 	
+1068	81	hsa-mir-15b	2	19	12CT 	
+59	50	hsa-mir-186	1	18		
+119	45	hsa-mir-664a	2	27		
+1188	95	hsa-mir-143	1	20	16TC 	
+1103	81	hsa-mir-4802	1	24		
+119	46	hsa-mir-664a	1	22		
+891	81	hsa-mir-26b	1	23	23GA 	
+113	87	hsa-mir-29b-2	2	23		
+891	81	hsa-mir-26b	1	19	5TG 	
+1037	42	hsa-let-7g	3	20		
+1189	88	hsa-mir-145	1	21		
+1076	53	hsa-mir-5588	1	19		
+829	44	hsa-mir-216b	1	23		
+1160	50	hsa-mir-449b	5	21		
+1175	87	hsa-mir-548f-3	1	23		
+1031	92	hsa-mir-191	16	20		
+1031	81	hsa-mir-191	1	32		
+2	91	hsa-mir-200b	52	22		
+1164	88	hsa-mir-582	1	19		
+1197	56	hsa-mir-146a	1	22		
+1197	55	hsa-mir-146a	1	21	18GA 	
+1079	88	hsa-mir-28	435	22		
+1069	48	hsa-mir-16-2	1	20		
+885	44	hsa-mir-4775	1	22		
+1031	52	hsa-mir-191	1	20		
+61	83	hsa-mir-760	6	18		
+1068	59	hsa-mir-15b	13	18		
+1031	50	hsa-mir-191	57	19		
+1194	48	hsa-mir-1303	1	23		
+1037	38	hsa-let-7g	37	23		
+891	81	hsa-mir-26b	22	21		
+1030	48	hsa-mir-425	11375	23		
+127	80	hsa-mir-4671	1	21		
+891	46	hsa-mir-26b	1	22	1TA 	
+1197	58	hsa-mir-146a	1	19		
+1031	93	hsa-mir-191	8	19		
+1203	97	hsa-mir-3912	22	21		
+1190	77	hsa-mir-378a	3	21	13GC 	
+1078	37	hsa-mir-1248	1	35		
+818	82	hsa-mir-1301	5	25		
+1130	94	hsa-mir-3140	1	18		
+119	83	hsa-mir-664a	9	25		
+1068	82	hsa-mir-15b	1	18	2GC 	
+1188	95	hsa-mir-143	1	20	8AC 	
+70	49	hsa-mir-942	2	22		
+1031	51	hsa-mir-191	103	23		
+1068	59	hsa-mir-15b	19	18	18TA 	
+1187	49	hsa-mir-584	1	22		
+1069	44	hsa-mir-16-2	1	24	17TC 	
+1031	93	hsa-mir-191	10	18		
+1068	54	hsa-mir-15b	1	27	24GA 	
+1068	92	hsa-mir-15b	1	22	4AT 	
+891	46	hsa-mir-26b	1	18		
+1069	44	hsa-mir-16-2	1	25	11TC 	
+1068	54	hsa-mir-15b	1	22	1TG 	
+1190	77	hsa-mir-378a	3	21	1AC 	
+1154	96	hsa-mir-579	1	25		
+82	95	hsa-mir-92b	1	21	15CA 	
+1190	78	hsa-mir-378a	1	20	4GT 	
+1030	49	hsa-mir-425	383	23		
+1031	50	hsa-mir-191	6507	22		
+1203	97	hsa-mir-3912	1	22		
+39	90	hsa-mir-30c-1	1	23		
+1190	77	hsa-mir-378a	1	24	14TG 	
+1184	81	hsa-mir-874	9	22		
+3	87	hsa-mir-200a	1	24		
+891	46	hsa-mir-26b	2	22	10TG 	
+1069	49	hsa-mir-16-2	33	20		
+89	50	hsa-mir-556	2	21		
+112	51	hsa-mir-29c	1	22		
+827	68	hsa-mir-217	1	22		
+891	46	hsa-mir-26b	1	22	8AT 	
+1170	50	hsa-mir-9-2	5	19		
+1078	38	hsa-mir-1248	2	35		
+1188	95	hsa-mir-143	1	20	3AC 	
+6	95	hsa-mir-551a	5	21		
+1069	50	hsa-mir-16-2	3	19		
+1190	77	hsa-mir-378a	3	21	16AT 	
+1021	86	hsa-mir-128-2	1	19	15TG 	
+1030	51	hsa-mir-425	1	20		
+65	68	hsa-mir-553	1	19	13AG 	
+4	84	hsa-mir-429	1	23		
+1197	55	hsa-mir-146a	3	24		
+1197	55	hsa-mir-146a	4	23	23GA 	
+121	97	hsa-mir-4742	2	22		
+11	46	hsa-mir-5697	2	21		
