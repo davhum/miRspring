@@ -23,3 +23,7 @@ have been set correctly.
 
 Please visit the miRspring homepage for detailed information about the project.
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/davhum/miRspring/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
