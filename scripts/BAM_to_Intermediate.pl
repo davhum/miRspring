@@ -8,8 +8,13 @@
 #
 # The following command will list the options available with this script:
 #   perl Bam_to_Intermediate.pl
-
-# Version 1.0
+#
+# Version 1.1
+#			- Added: filter for minimum mapping quality.
+#			
+#			- Fixed: if using miRBase as a reference no read contains more than 1 mismatch
+#			- Fixed: Now correctly processes 0 mismatches.
+#
 # Author: David Thomas Humphreys
 # Copyright (C) 2013, Victor Chang Cardiac Research Institute
 #
@@ -60,9 +65,11 @@ sub load_default_reference_files()
 	$parameters->{precursor_seq_file} = "$Precursor_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: hairpin.fa", if (! defined $parameters->{precursor_seq_file});
 ####-------------------------------------------------------------------------------------------------------------------------------
 
-	$parameters->{flank} = $Flank, if (! defined $parameters->{flank});
+	$parameters->{flank}     = $Flank, if (! defined $parameters->{flank});
 	$parameters->{reference_format} = $ReferenceFormat, if (! defined $parameters->{reference_format});
-       $parameters->{colour_mm} = 6, if (! defined $parameters->{colour_mm});
+    $parameters->{colour_mm} = 6, if (! defined $parameters->{colour_mm});
+	$parameters->{mapQual}   = 0, if (! defined $parameters->{mapQual});
+	$parameters->{mismatch} = 1, if (! defined $parameters->{mismatch});
 }
 
 
@@ -106,8 +113,9 @@ sub usage {
     	print "-mat <Mature sequence file, default is defined in script> \n\t";
     	print "-pre <Precursor file, default is defined in script> \n\t";
     	print "-flank <length of flanking sequence>\n\t";
-	print "-ref <format of reference: \'0\' (genome) or \'1\' (custom), 0 (genome) is default\n\t";
-       print "-cmm <color mismatch O(SOLiD data): 0 - 6, default is 6>\n\n\n";
+		print "-ref <format of reference: \'0\' (genome) or \'1\' (custom), 0 (genome) is default\n\t";
+		print "-cmm <color mismatch O(SOLiD data): 0 - 6, default is 6>\n\t";
+		print "-mq <minimum mapping quality, default is 0>\n\n\n";
 
     	exit(1);
 }
@@ -139,6 +147,8 @@ sub parse_command_line {
         elsif($next_arg eq "-flank"){ $parameters->{flank} = shift(@ARGV); }
         elsif($next_arg eq "-ref"){ $parameters->{reference_format} = shift(@ARGV); }
         elsif ($next_arg eq "-cmm") {$parameters->{colour_mm} = shift(@ARGV); }
+		elsif ($next_arg eq "-mq") {$parameters->{mapQual} = shift(@ARGV); }
+
 
         else { print "Invalid argument: $next_arg"; usage(); }
     }
@@ -306,7 +316,7 @@ close OUTPUT;
 exit(0);
 
 sub Extract_miRD_From_Sam
-{       my $Chr = shift;
+{   my $Chr = shift;
 	my $Start = shift;
 	my $End = shift;
 	my $Index = shift;
@@ -318,25 +328,28 @@ sub Extract_miRD_From_Sam
 	foreach(@Sam_Input)
 	{	# 667_1107_1401   0       chr2    180133127       100     18M17H  *       0 0       TCAGCTGTTNNNNNNNNN      :75434111%%%%%))##      RG:Z:Library4_4 NH:i:1 CM:i:1  NM:i:8  CQ:Z:@@@@@@@@@*@@@@/@@@@-@@@@-@@>@*@@@@-        CS:Z:T02123211030231023023302010303131121
 		# 1396_563_435_F3	0	hsa-mir-671	29	100	23M	*	0	23	AGGAAGCCCTGGAGGGGCTGGAG	26>8?&&@:?2*<>7/)5?9/-=	NM:i:0  CM:i:2	CS:Z:T32020230021222002321022220302000303	XI:Z:hsa-miR-671-5p|{hsa-miR-671-5p}|29_52|	CQ:Z:26>8?&&@:?2*<>7/)5?9/-=/%9%8<<%)927  IH:i:1
+
        	if ($_ =~ m/CM:i:(\d)/)
-              {	next, if ($1 > $parameters->{colour_mm});	}
+		{	next, if ($1 > $parameters->{colour_mm});	}
 
 		my @Record = split("\t",$_);
 
-	       $Record[2] =~ m/chr(.*?)$/;
-	       my $Chr = $1;
+		next, if ($Record[4] < $parameters->{mapQual});	# Check read has requested mapping quality.
+		
+		
+		$Record[2] =~ m/chr(.*?)$/;
+		my $Chr = $1;
 		$Chr = $ChromStats->{$parameters->{species}}->{"M"}, if ($1 eq 'M');
-	       $Chr = $ChromStats->{$parameters->{species}}->{"X"}, if ($1 eq 'X');
-	       $Chr = $ChromStats->{$parameters->{species}}->{"Y"}, if ($1 eq 'Y');
+		$Chr = $ChromStats->{$parameters->{species}}->{"X"}, if ($1 eq 'X');
+		$Chr = $ChromStats->{$parameters->{species}}->{"Y"}, if ($1 eq 'Y');
 
-	       if ($Record[5] =~ m/(\d+)M.*?/)
+		if ($Record[5] =~ m/(\d+)M.*?/)
 		{	my $length = $1;
-                	my $Precursor_Pos = $Record[3] - $Start;
+			my $Precursor_Pos = $Record[3] - $Start;
 			my $Name_ID = $Name;
 
 			my $RefSeq = $Record[9];
 			my $AntisenseFlag = 0;
-
 
 			if ($Record[1] == 16)
 			{
@@ -348,44 +361,47 @@ sub Extract_miRD_From_Sam
 					$Name_ID = "$Name_ID"."AntiSense";
 					$AntisenseFlag = 1;
 				}
-
 			}
 			elsif ($Strand eq '-')
 			{	$Name_ID = "$Name_ID"."AntiSense";
 				$AntisenseFlag = 1;
 			}
 
-
-
-
 			my $Error;
-                     if ($_ =~ m/NM:i:(\d+)/)
-                     {      # miRspring only set up to accept 1 mismatch
-				if ($1 > 1)
-				{	next;	}
-                        	elsif (($1 > 0) && ($AntisenseFlag == 0))
-                        	{	# Need to grab reference and then compare to the Bam field.
-					my $StartPos = $Precursor_Pos;
-					my $Reference_Seq = substr($Precursor_Seqs->{$Name},$StartPos,$length);
-					$Error = IsMatch($Reference_Seq,$RefSeq);
-                                	my @Error_Position_List = split(' ',$Error);
-					next, if (scalar @Error_Position_List > 1);   # This is a check as some aligners actually have more mismatches than they report in the NM:i field!?!
-                             }
-				 elsif (($1 > 0) && ($AntisenseFlag == 1))
-				{	$Error = "1mm";	}	# Will need to implement a detailed error report
+			if ($_ =~ m/NM:i:(\d+)/)
+			{   # miRspring only set up to accept 1 mismatch
+				if ($parameters->{mismatch} ne "OFF")
+				{
+					if (($1 > 1) || ($1 > $parameters->{mismatch}))
+					{	next;	}
+					elsif (($1 > 0) && ($AntisenseFlag == 0))
+					{	# Need to grab reference and then compare to the Bam field.
+						my $StartPos = $Precursor_Pos;
+						my $Reference_Seq = substr($Precursor_Seqs->{$Name},$StartPos,$length);
+						$Error = IsMatch($Reference_Seq,$RefSeq);
+						my @Error_Position_List = split(' ',$Error);
+						next, if (scalar @Error_Position_List > 1);   # This is a check as some aligners actually have more mismatches than they report in the NM:i field!?!
+					}
+					elsif (($1 > 0) && ($AntisenseFlag == 1))
+					{	$Error = "1mm";	}	# Will need to implement a detailed error report
+				}
+			}
 
-                     }
-
+			
+			
 			# At the moment the mismatch information is only used for sense transcripts. Stay tuned for antisense data.
 			if ($AntisenseFlag == 0)
-			{	$miRspring->{"$Unique_miR_ID->{$Name}\t$Precursor_Pos\t$Name_ID\t$length\t$Error"}++;	}
+			{	$miRspring->{"$Unique_miR_ID->{$Name}\t$Precursor_Pos\t$Name_ID\t$length\t$Error"}++;	
+			}
 			elsif ($Antisense_pairs->{$Name} eq '')
 			{	$antisense_miRs->{"$Unique_miR_ID->{$Name}\t$Precursor_Pos\t$Name_ID\t$length\t$Error"}++;	}
 
-	        }
-                else
-                {	print "\nCannot obtain $Name length from $Record[5] in $_";	}
+	    }
+		else
+		{	print "\nCannot obtain $Name length from $Record[5] in $_";	}
+		
 	}
+
 }
 
 
@@ -411,9 +427,11 @@ sub Extract_From_miRBase_Reference()
 
 
 	foreach(@Sam_Input)
-	{
+	{	# QName			Flag	Rname		pos	mapQ CIGAR	RNext TLen
 		# 1396_563_435_F3	0	hsa-mir-671	29	100	23M	*	0	23	AGGAAGCCCTGGAGGGGCTGGAG	26>8?&&@:?2*<>7/)5?9/-=	NM:i:0  CM:i:2	CS:Z:T32020230021222002321022220302000303	XI:Z:hsa-miR-671-5p|{hsa-miR-671-5p}|29_52|	CQ:Z:26>8?&&@:?2*<>7/)5?9/-=/%9%8<<%)927  IH:i:1
 		my @Record = split("\t",$_);
+		next, if ($Record[4] > $parameters->{mapQual});	# Check read has requested mapping quality.
+		
 		if ($Record[5] =~ m/(\d+)M.*?/)
 		{	my $length = $1;
 			$Name = $Record[2];
@@ -421,16 +439,18 @@ sub Extract_From_miRBase_Reference()
 			my $StartPos = $Record[3]+$parameters->{flank}-1;
 
 			my $Error;
-                     if ($Record[11] =~ m/NM:i:(\d+)/)
-                     {       #print " extracted $1";
-                     	if ($1 > 0)
-                        	{	# Need to grab reference and then compare to the Bam field.
+			if ($Record[11] =~ m/NM:i:(\d+)/)
+            {   #print " extracted $1";
+                if (($1 > 1) || ($1 > $parameters->{mismatch}))
+				{	next;	}
+				elsif ($1 > 0)
+                {	# Need to grab reference and then compare to the Bam field.
 					my $Reference_Seq = substr($Precursor_Seqs->{$Name},$StartPos,$length);
 					$Error = IsMatch($Reference_Seq,$Record[9]);
-                            }
-                     }
+                }
+            }
 			$miRspring->{"$Unique_miR_ID->{$Name}\t$StartPos\t$Name\t$length\t$Error"}++;
-	        }
+	    }
 		else
 		{	print "\nCannot obtain $Name length from $Record[5] in $_";	}
 	}

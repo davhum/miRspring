@@ -5,11 +5,15 @@
 #
 #      The following command will list the options available with this script:
 #               perl Intermediate_to_miRspring.pl
-
-# Version 1.0
+#
+# Version 1.1
+#		- Added: freqtag filter (filter sequences that do not have a minimum count)
+#		- Added: starttagfreq   (filters sequences that have a common start position and that do not make a minimum count). 
+#			
+#	
 # Author: David Thomas Humphreys
 # Copyright (C) 2013, Victor Chang Cardiac Research Institute
-
+#
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
 #    the Free Software Foundation, either version 3 of the License, or
@@ -47,56 +51,59 @@ sub load_default_reference_files()
 ####------SETUP B -------------------------------------------------------------------------------------------------------------------------
 ### Before running the scripts recommend to set the default mirbase file names
 
-        $parameters->{gff} = "$Precursor_GFF_Dir/ ENTER FILENAME HERE, if using default miRbase files use: $parameters->{species}.gff2", if (! defined $parameters->{gff});
-        $parameters->{precursor_seq_file} = "$Precursor_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: hairpin.fa", if (! defined $parameters->{precursor_seq_file});
+    $parameters->{gff} = "$Precursor_GFF_Dir/ ENTER FILENAME HERE, if using default miRbase files use: $parameters->{species}.gff2", if (! defined $parameters->{gff});
+    $parameters->{precursor_seq_file} = "$Precursor_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: hairpin.fa", if (! defined $parameters->{precursor_seq_file});
 	$parameters->{mature_seq_file} = "$Mature_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: mature.fa", if (! defined $parameters->{mature_seq_file});
 ####-------------------------------------------------------------------------------------------------------------------------------
 
 
 
 	$parameters->{mintag} = 0, if (! defined $parameters->{mintag});
-        $parameters->{flank} = 0, if (! defined $parameters->{flank});
+	$parameters->{tagfreq} = 0, if (! defined $parameters->{tagfreq});	
+	$parameters->{starttagfreq} = 0, if (! defined $parameters->{starttagfreq});	
+    $parameters->{flank} = 0, if (! defined $parameters->{flank});
 	$parameters->{output} =  "$parameters->{input}".".html", if (! defined $parameters->{output});
-        $parameters->{mbase} = 3, if (! defined $parameters->{mbase});
-        $parameters->{mismatch} = 1, if (! defined $parameters->{mismatch});
-        $parameters->{showflank} = 0, if (! defined $parameters->{showflank});
-        $parameters->{seedclass} = 0, if (! defined $parameters->{seedclass});
-        $parameters->{normalisation} = 0, if (! defined $parameters->{normalisation});
+    $parameters->{mbase} = 3, if (! defined $parameters->{mbase});
+    $parameters->{mismatch} = 1, if (! defined $parameters->{mismatch});
+    $parameters->{showflank} = 0, if (! defined $parameters->{showflank});
+    $parameters->{seedclass} = 0, if (! defined $parameters->{seedclass});
+    $parameters->{normalisation} = 0, if (! defined $parameters->{normalisation});
 
 # NEED TO CHECK NUMBERS
 
-        if ($parameters->{species} eq 'oar')
-	{	$parameters->{mature_file} = '/long/reference/sheep/oar mature.fa';	}
+#    if ($parameters->{species} eq 'oar')
+#	{	$parameters->{mature_file} = '/long/reference/sheep/oar mature.fa';	}
 
 }
 
 
 
 sub usage {
-        print "\nUsage: $0 \n\n\t ";
+    print "\nUsage: $0 \n\n\t ";
 
-        print "REQUIRED \n\t";
-        print "-in <input file> \n\t";
-        print "-s <three letter species code>\n\t";
+    print "REQUIRED \n\t";
+    print "-in <input file> \n\t";
+    print "-s <three letter species code>\n\t";
 
-
-        print "OPTIONAL \n\t";
-        print "-out <output file name with full path> \n\n\t";
-        print "-mm <mismatches: '0' or '1', default is 1> \n\t";
-        print "-gff <Gene features file (gff), default is defined in script> \n\t";
-        print "-mat <Mature sequence file, default is defined in script> \n\t";
-        print "-pre <Precursor file, default is defined in script> \n\t";
-        print "-flank <length of flanking sequence>\n\t";
-        print "-ref <format of reference: \'0\' (genome) or \'1\' (custom), 0 (genome) is default\n\t";
+    print "OPTIONAL \n\t";
+    print "-out <output file name with full path> \n\n\t";
+	print "-mm <mismatches: '0' or '1', default is 1> \n\t";
+	print "-gff <Gene features file (gff), default is defined in script> \n\t";
+	print "-mat <Mature sequence file, default is defined in script> \n\t";
+	print "-pre <Precursor file, default is defined in script> \n\t";
+	print "-flank <length of flanking sequence>\n\t";
+	print "-ref <format of reference: \'0\' (genome) or \'1\' (custom), 0 (genome) is default\n\t";
 	print "-mintag <only include precursors with at least this number of tags, default = 0>\n\t";
+	print "-tagfreq <minimum sequence count for all unique sequence tags, default = 0>\n\t";
+	print "-starttagfreq <minimum sequence count for all unique sequence tags, default = 0>\n\t";
 	print "-comment <message for top of miRspring document>\n\t";
-        print "-mbase <number of nucleotides to extend up and downstream to accept tag as a processed miRNA, default = 3>\n\t";
-        print "-mismatch <number of nucleotide mismatches to display, default = 1>\n\t";
+    print "-mbase <number of nucleotides to extend up and downstream to accept tag as a processed miRNA, default = 3>\n\t";
+    print "-mismatch <number of nucleotide mismatches to display, default = 1>\n\t";
 	print "-showflank <set the miRspring document to display the flanking sequence as default. No = 0, Yes = 1. Default = 0>\n\t";
-        print "-seedclass <0 = seeds only from miRs; 1 = seeds from all classes, default = 0>\n\t";
-        print "-normalisation < 0 = raw counts; 1 = RPM miRs; 2 = RPM all RNA classes in document, default = 0>\n\n\n";
+    print "-seedclass <0 = seeds only from miRs; 1 = seeds from all classes, default = 0>\n\t";
+    print "-normalisation < 0 = raw counts; 1 = RPM miRs; 2 = RPM all RNA classes in document, default = 0>\n\n\n";
 
-        exit(1);
+    exit(1);
 }
 
 
@@ -106,8 +113,6 @@ if(scalar(@ARGV) == 0)
 
 # Parse the Command Line
 &parse_command_line($parameters, @ARGV);
-
-
 
 sub parse_command_line
 {
@@ -123,19 +128,20 @@ sub parse_command_line
 	if ($next_arg =~ m/^-.*?/)
 	{	$CommentFlag = 0;	}
 
-        if ($next_arg eq "-s"){ $parameters->{species} = shift(@ARGV);  }
+	if ($next_arg eq "-s"){ $parameters->{species} = shift(@ARGV);  }
 	elsif($next_arg eq "-in"){ $parameters->{input} = shift(@ARGV); }
-        elsif($next_arg eq "-ml"){ $parameters->{min_length} = shift(@ARGV); }
-        elsif($next_arg eq "-mm"){ $parameters->{mismatch} = shift(@ARGV); }
-        elsif($next_arg eq "-gff"){ $parameters->{gff} = shift(@ARGV); }
-        elsif($next_arg eq "-mat"){ $parameters->{mature_seq_file} = shift(@ARGV); }
-        elsif($next_arg eq "-pre"){ $parameters->{precursor_seq_file} = shift(@ARGV); }
-        elsif($next_arg eq "-out"){ $parameters->{output} = shift(@ARGV); }
-        elsif($next_arg eq "-flank"){ $parameters->{flank} = shift(@ARGV); }
-        elsif($next_arg eq "-ref"){ $parameters->{reference_format} = shift(@ARGV); }
+    elsif($next_arg eq "-ml"){ $parameters->{min_length} = shift(@ARGV); }
+    elsif($next_arg eq "-mm"){ $parameters->{mismatch} = shift(@ARGV); }
+    elsif($next_arg eq "-gff"){ $parameters->{gff} = shift(@ARGV); }
+    elsif($next_arg eq "-mat"){ $parameters->{mature_seq_file} = shift(@ARGV); }
+    elsif($next_arg eq "-pre"){ $parameters->{precursor_seq_file} = shift(@ARGV); }
+    elsif($next_arg eq "-out"){ $parameters->{output} = shift(@ARGV); }
+    elsif($next_arg eq "-flank"){ $parameters->{flank} = shift(@ARGV); }
+    elsif($next_arg eq "-ref"){ $parameters->{reference_format} = shift(@ARGV); }
 	elsif($next_arg eq "-mintag"){ $parameters->{mintag} = shift(@ARGV); }
+	elsif($next_arg eq "-tagfreq"){ $parameters->{tagfreq} = shift(@ARGV); }
+	elsif($next_arg eq "-starttagfreq"){ $parameters->{starttagfreq} = shift(@ARGV); }
 	elsif($next_arg eq "-mbase") { $parameters->{mbase} = shift(@ARGV); }
-	elsif($next_arg eq "-mismatch") { $parameters->{mismatch} = shift(@ARGV); }
 	elsif($next_arg eq "-mismatch") { $parameters->{mismatch} = shift(@ARGV); }
 	elsif($next_arg eq "-showflank") { $parameters->{showflank} = shift(@ARGV); }
 	elsif($next_arg eq "-seedclass") { $parameters->{seedclass} = shift(@ARGV); }
@@ -148,9 +154,9 @@ sub parse_command_line
         else { print "Invalid argument: $next_arg"; usage(); }
     }
 
-        # Check all essential options have been entered.
-        my $Error_Log = '';
-        $Error_Log .= "Species undefined (-s)\n\t", if (! defined $parameters->{species});
+    # Check all essential options have been entered.
+    my $Error_Log = '';
+    $Error_Log .= "Species undefined (-s)\n\t", if (! defined $parameters->{species});
 	$Error_Log .= "No output file defined (-in)\n\t", if (! defined $parameters->{input});
 
         if ($Error_Log ne '')
@@ -184,23 +190,21 @@ my $No_Key;	# quick way for me to work out how many mulit-loci miRs.
 while(<MIRBASE>)
 {
 	if ($_ =~ m/>(.*?),/)
-        {       my $ID = $1;
-        	$ID =~ s/miR/mir/;
+    {       my $ID = $1;
+		$ID =~ s/miR/mir/;
 		$miRs->{$ID} = <MIRBASE>;
-                chomp($miRs->{$ID});
-                if ($ID =~ m/(\w\w\w-\w\w\w-.*?)-.*?$/)
-                {	my $ShortID = $1;
-                	my $key = "$ShortID TOTAL";
+        chomp($miRs->{$ID});
+        if ($ID =~ m/(\w\w\w-\w\w\w-.*?)-.*?$/)
+        {	my $ShortID = $1;
+			my $key = "$ShortID TOTAL";
 			$Multi_loci->{$key} = 0, if ($Multi_loci->{$key} <= 0);
-                        $No_Key->{$key} = 0;
-
-                        $Multi_loci->{"$ShortID $Multi_loci->{$key}"}= $ID;
-                        $Multi_loci->{$key}++;
-                        $TotalMultiLoci++;
-                }
-
-                $miRs->{"$ID Middle"} = length($miRs->{$ID})/2;	# Estimate the middle of precursor and save
+            $No_Key->{$key} = 0;
+            $Multi_loci->{"$ShortID $Multi_loci->{$key}"}= $ID;
+            $Multi_loci->{$key}++;
+            $TotalMultiLoci++;
         }
+        $miRs->{"$ID Middle"} = length($miRs->{$ID})/2;	# Estimate the middle of precursor and save
+    }
 }
 close MIRBASE;
 my @Allkeys = keys(%$No_Key);
@@ -213,11 +217,11 @@ while (<GENOME>)
 {	# 1	.	miRNA	30366	30503	.	+	.	ACC="MI0006363"; ID="hsa-mir-1302-2";
 	my @mir_coord = split('\t',$_);
         if ($mir_coord[8] =~ m/\"(\w\w\w-\w\w\w-.*?)\"/)
-        {       my $ID = $1;
+        {	my $ID = $1;
         	$Genome_Coords->{$1} = "'$mir_coord[0]', $mir_coord[3], '$mir_coord[6]'";
         	$miRs->{$Order++} = $ID;
-         }
- }
+        }
+}
 close GENOME;
 
 
@@ -227,29 +231,28 @@ my $Mature_Seq;
 while(<MATURE>)
 {
 	if ($_ =~ m/>(.*?) MI/)
-        {	my $Mature_ID = $1;
-        	$Mature_ID =~ tr/R/r/;
-        	my $Mature_Seq = <MATURE>;
-                chomp($Mature_Seq);
-                $Mature_Seq =~ tr/Uu/Tt/;
+    {	my $Mature_ID = $1;
+		$Mature_ID =~ tr/R/r/;
+        my $Mature_Seq = <MATURE>;
+        chomp($Mature_Seq);
+        $Mature_Seq =~ tr/Uu/Tt/;
 		$Mature_Seq =~ s/\r//;
 
-#        	if ($Mature_ID =~ m/($parameters->{species}-\w\w\w-\w+)(.*?)/)
-        	if ($Mature_ID =~ m/(\w\w\w-\w\w\w-\w+)(.*?)/)
-
-                {       my $miR_Number = $2; # This will contain a '-' character if multi-loci
-                        my $Temp = $1;
-                        $Mature_ID = $1;
-			   my $Mature_ID_Master = $1;
-                        my $i = 0;
-                        my $Max_Loop = 0;
-                        $Max_Loop = $Multi_loci->{"$Mature_ID TOTAL"}, if (defined $Multi_loci->{"$Mature_ID TOTAL"});
-                        do
-                        {
-                		if ($miRs->{$Mature_ID} =~ m/($Mature_Seq)/i)
-                		{	my $Match_Pos = length($`);
-                        		my $Side = '5p';
-                        		$Side = '3p', if ($Match_Pos > $miRs->{"$Mature_ID Middle"});
+#     	if ($Mature_ID =~ m/($parameters->{species}-\w\w\w-\w+)(.*?)/)
+        if ($Mature_ID =~ m/(\w\w\w-\w\w\w-\w+)(.*?)/)
+		{	my $miR_Number = $2; # This will contain a '-' character if multi-loci
+			my $Temp = $1;
+            $Mature_ID = $1;
+			my $Mature_ID_Master = $1;
+            my $i = 0;
+            my $Max_Loop = 0;
+            $Max_Loop = $Multi_loci->{"$Mature_ID TOTAL"}, if (defined $Multi_loci->{"$Mature_ID TOTAL"});
+            do
+            {
+				if ($miRs->{$Mature_ID} =~ m/($Mature_Seq)/i)
+                {	my $Match_Pos = length($`);
+					my $Side = '5p';
+                    $Side = '3p', if ($Match_Pos > $miRs->{"$Mature_ID Middle"});
 					# Check to see if already defined
 					if (defined $miRs->{"$Mature_ID $Side"})
 					{	if ($Match_Pos > $miRs->{"$Mature_ID $Side"})
@@ -258,24 +261,20 @@ while(<MATURE>)
 							$Side = '3p';
 						}
 						elsif ($Match_Pos < $miRs->{"$Mature_ID $Side"})
-                                                {       $miRs->{"$Mature_ID 3p"} = $miRs->{"$Mature_ID $Side"};
+						{   $miRs->{"$Mature_ID 3p"} = $miRs->{"$Mature_ID $Side"};
 							$miRs->{"$Mature_ID 3p END"} = $miRs->{"$Mature_ID $Side END"};
 							$Side = '5p';
-                                                }
+						}
 						#print "\nSwapped $Mature_ID coordinates";
 					}
-
-
-
-                                	$miRs->{"$Mature_ID $Side"} = $Match_Pos;	# Record miRbase position
-                                        $miRs->{"$Mature_ID $Side END"} = $Match_Pos + length($Mature_Seq);
-                        	}
-                            $Mature_ID = $Multi_loci->{"$Mature_ID_Master $i"};
-                        	$i++;
-                         } while ($i <= $Max_Loop);
+					$miRs->{"$Mature_ID $Side"} = $Match_Pos;	# Record miRbase position
+                    $miRs->{"$Mature_ID $Side END"} = $Match_Pos + length($Mature_Seq);
                 }
-
+                $Mature_ID = $Multi_loci->{"$Mature_ID_Master $i"};
+                $i++;
+            } while ($i <= $Max_Loop);
         }
+    }
 }
 close MATURE;
 
@@ -314,19 +313,17 @@ while(<MIRDSPRING_DATA>)
 
 	# fileindex	Start pos	miRNA name	Freq	Length	ERROR
 	if ($_ =~ m/^(.*?)\t(\d+)\t(\w\w\w-\w\w\w-.*?)\t(\d+)\t(\d+)\t(.*?)$/)
-	{
-
+	{	
 		my ($Index,$Start, $miR_Name, $Freq, $Length, $Error) = ($1,$2,$3,$4,$5,$6);
-                if ($Error =~ m/^E(\d+)E\d+(\w)to(\w)/)
-                {	$Error = "$1$2$3";	}
-		  elsif ($Error =~ m/^(\d+\w\w)/)
-		  {	$Error = $1;	}
-                else
-                {	$Error = 'NONE';	}
-                $Raw_data->{$miR_Name}->{$Start}->{$Length}->{$Error} += $Freq;
-
+		next, if ($Freq < $parameters->{tagfreq});
+		if ($Error =~ m/^E(\d+)E\d+(\w)to(\w)/)
+		{	$Error = "$1$2$3";	}
+		elsif ($Error =~ m/^(\d+\w\w)/)
+		{	$Error = $1;	}
+        else
+        {	$Error = 'NONE';	}
+			$Raw_data->{$miR_Name}->{$Start}->{$Length}->{$Error} += $Freq;
         }
-
 }
 close MIRDSPRING_DATA;
 
@@ -346,93 +343,108 @@ my $JS_Genome_Coords;   # Holds genome coordinates of all miRs
 for (my $i = 0; $i < $Order;$i++)
 {	my $miR_ID = $miRs->{$i};
 	my $Current_miR = $Raw_data->{$miR_ID};
-        my $Hairpin_Total_Counts = 0;
-        my $Output;	#Debug purposes
-        my ($FiveP, $ThreeP, $Non_Canonical, $miR_Avg_Length, $Editing) = (0,0,0,0,0);
-        my ($FiveP_5pIsomiR, $FiveP_3pIsomiR, $ThreeP_5pIsomiR,$ThreeP_3pIsomiR) = (0,0,0,0);
+    my $Hairpin_Total_Counts = 0;
+    my $Output;	#Debug purposes
+    my ($FiveP, $ThreeP, $Non_Canonical, $miR_Avg_Length, $Editing) = (0,0,0,0,0);
+    my ($FiveP_5pIsomiR, $FiveP_3pIsomiR, $ThreeP_5pIsomiR,$ThreeP_3pIsomiR) = (0,0,0,0);
 
-        # Now sort keys
-        foreach (sort {$Current_miR->{$b} <=> $Current_miR->{$a}} keys %$Current_miR)
-        {       my $Start_Pos = $_;
-        	my $Current_Start = $Current_miR->{$Start_Pos};
+    # Now sort keys
+    foreach (sort {$Current_miR->{$b} <=> $Current_miR->{$a}} keys %$Current_miR)
+    {   my $Start_Pos = $_;
+		my $Current_Start = $Current_miR->{$Start_Pos};
+		
+		# Check to see if start_tagfreq is set. If so then do precount to see if we need to process.
+		if ($parameters->{starttagfreq} > 0)
+		{	my $CummulativeStartCount = 0;
+			foreach (sort {$Current_Start->{$b} <=> $Current_Start->{$a}} keys %$Current_Start)
+			{	my $Length = $_;
+				my $Mismatch_Data = $Current_Start->{$Length};
+				foreach (keys %$Mismatch_Data)
+				{	my $Error_Code = $_;
+					my $Freq = $Mismatch_Data->{$Error_Code};
+					next, if (($parameters->{mismatch} == 0) && ($Error_Code ne ''));
+					$CummulativeStartCount += $Freq;
+				}
+			}
+			print "\nDebug $CummulativeStartCount", if ($miR_ID eq "hsa-mir-34c");
+			next, if ($parameters->{starttagfreq} > $CummulativeStartCount);
+						print " .....pass", if ($miR_ID eq "hsa-mir-34c");
+		}
+		
 
-                foreach (sort {$Current_Start->{$b} <=> $Current_Start->{$a}} keys %$Current_Start)
-        	{       my $Length = $_;
+        foreach (sort {$Current_Start->{$b} <=> $Current_Start->{$a}} keys %$Current_Start)
+        {	my $Length = $_;
 			# Need to check length and start position are not outside boundaries of precursor + flank
 
 			my $Mismatch_Data = $Current_Start->{$Length};
-                        foreach (keys %$Mismatch_Data)
-                        {	my $Error_Code = $_;
-                            	my $Freq = $Mismatch_Data->{$Error_Code};
+            foreach (keys %$Mismatch_Data)
+            {	my $Error_Code = $_;
+				my $Freq = $Mismatch_Data->{$Error_Code};
 				$Error_Code = '', if ($Error_Code eq 'NONE');
-                        	$JS_Data_Var .=  "[$New_Index,$Start_Pos,$Length,$Freq,\'$Error_Code\'],";
+				$JS_Data_Var .=  "[$New_Index,$Start_Pos,$Length,$Freq,\'$Error_Code\'],";
 
 				next, if (($parameters->{mismatch} == 0) && ($Error_Code ne ''));
 
-                        	$miR_Avg_Length += ($Length * $Freq); # NEED TO PUT CONDITION TO SAVE LENGTHS ONLY WITHIN PRECURSOR  and not flanking sequences!!
+				$miR_Avg_Length += ($Length * $Freq); # NEED TO PUT CONDITION TO SAVE LENGTHS ONLY WITHIN PRECURSOR  and not flanking sequences!!
 				$Editing += $Freq, if ($Error_Code ne '');
-                        	$Hairpin_Total_Counts += $Freq;
+				$Hairpin_Total_Counts += $Freq;
 
-                 		if (abs($Start_Pos -  $miRs->{"$miR_ID 5p"}) <= $IsomiR_Range)
-                        	{	$FiveP += $Freq;
+				if (abs($Start_Pos -  $miRs->{"$miR_ID 5p"}) <= $IsomiR_Range)
+				{	$FiveP += $Freq;
 					# Calculate all miRs that start EXACTLY as described by miRBase. Later I can work out the % of isomiRS
-                        	        if ( (abs($Start_Pos + $Length -  $miRs->{"$miR_ID 5p END"})== 0) ||
-            				     		(abs($Start_Pos + $Length -  $miRs->{"$miR_ID 3p END"}) == 0) )
-	                	        {	$FiveP_3pIsomiR += $Freq;	}
+					if ( (abs($Start_Pos + $Length -  $miRs->{"$miR_ID 5p END"})== 0) || (abs($Start_Pos + $Length -  $miRs->{"$miR_ID 3p END"}) == 0) )
+	                {	$FiveP_3pIsomiR += $Freq;	}
 
-	                	        if ( (abs($Start_Pos -  $miRs->{"$miR_ID 5p"})== 0) ||(abs($Start_Pos - $miRs->{"$miR_ID 3p"}) == 0) )
-        	        	        {	$FiveP_5pIsomiR += $Freq;	}
+	                if ( (abs($Start_Pos -  $miRs->{"$miR_ID 5p"})== 0) ||(abs($Start_Pos - $miRs->{"$miR_ID 3p"}) == 0) )
+        	        {	$FiveP_5pIsomiR += $Freq;	}
+                }
+                elsif (abs($Start_Pos - $miRs->{"$miR_ID 3p"}) <= $IsomiR_Range)
+                {	$ThreeP += $Freq;
+	                if ( (abs($Start_Pos + $Length - $miRs->{"$miR_ID 5p END"})== 0) ||(abs($Start_Pos + $Length - $miRs->{"$miR_ID 3p END"}) == 0) )
+	                {	$ThreeP_3pIsomiR += $Freq;	}
 
-
-                        	}
-                        	elsif (abs($Start_Pos - $miRs->{"$miR_ID 3p"}) <= $IsomiR_Range)
-                        	{	$ThreeP += $Freq;
-	                	        if ( (abs($Start_Pos + $Length - $miRs->{"$miR_ID 5p END"})== 0) ||
-            				     		(abs($Start_Pos + $Length - $miRs->{"$miR_ID 3p END"}) == 0) )
-	                	        {	$ThreeP_3pIsomiR += $Freq;	}
-
-                        	        if ( (abs($Start_Pos -  $miRs->{"$miR_ID 5p"})== 0) ||(abs($Start_Pos - $miRs->{"$miR_ID 3p"}) == 0) )
-        	        	        {	$ThreeP_5pIsomiR += $Freq;	}
-                        	}
-                        	else
-                        	{	$Non_Canonical += $Freq	}
+                    if ( (abs($Start_Pos -  $miRs->{"$miR_ID 5p"})== 0) ||(abs($Start_Pos - $miRs->{"$miR_ID 3p"}) == 0) )
+        	        {	$ThreeP_5pIsomiR += $Freq;	}
+                }
+                else
+                {	$Non_Canonical += $Freq	}
 
 			} # foreach (keys %$Error_Code)
-                } # foreach (sort {$Current_Start->{$b} <=> $Current_Start->{$a}} keys %$Current_Start)
-        } # foreach (sort {$Current_miR->{$b} <=> $Current_miR->{$a}} keys %$Current_miR)
+		} # foreach (sort {$Current_Start->{$b} <=> $Current_Start->{$a}} keys %$Current_Start)
+	} # foreach (sort {$Current_miR->{$b} <=> $Current_miR->{$a}} keys %$Current_miR)
 
-        if ($Hairpin_Total_Counts > $parameters->{mintag})
-        {
-        	$DataSet_miRs->{$New_Index} = $miRs->{$i};	# Save miR index
+    if ($Hairpin_Total_Counts > $parameters->{mintag})
+    {
+		$DataSet_miRs->{$New_Index} = $miRs->{$i};	# Save miR index
 		$DataSet_miRs->{"$New_Index TOTAL"} = $Hairpin_Total_Counts;
 		$DataSet_miRs->{"$New_Index AVG LENGTH"} = nearest(0.1,$miR_Avg_Length/$Hairpin_Total_Counts);
 		# Save 5p, 3p and non-canonical counts
-                $DataSet_miRs->{"$New_Index 5p"} = $FiveP;
-                $DataSet_miRs->{"$New_Index 3p"} = $ThreeP;
-                $DataSet_miRs->{"$New_Index Non_Canonical"} = $Non_Canonical;
+        $DataSet_miRs->{"$New_Index 5p"} = $FiveP;
+        $DataSet_miRs->{"$New_Index 3p"} = $ThreeP;
+        $DataSet_miRs->{"$New_Index Non_Canonical"} = $Non_Canonical;
 		$DataSet_miRs->{"$New_Index Mismatch"} = $Editing;
 
-                $FiveP_5pIsomiR = $FiveP - $FiveP_5pIsomiR;
+        $FiveP_5pIsomiR = $FiveP - $FiveP_5pIsomiR;
 		$FiveP_3pIsomiR = $FiveP - $FiveP_3pIsomiR;
-                $ThreeP_5pIsomiR = $ThreeP - $ThreeP_5pIsomiR;
-                $ThreeP_3pIsomiR =  $ThreeP - $ThreeP_3pIsomiR;
+        $ThreeP_5pIsomiR = $ThreeP - $ThreeP_5pIsomiR;
+        $ThreeP_3pIsomiR =  $ThreeP - $ThreeP_3pIsomiR;
 
-                #  /* GLOBAL VARIABLES */
+        #  /* GLOBAL VARIABLES */
 		#/* [Name][Sequence][Secondary structure]	[Total counts][5p counts][3p counts][Other Counts]] */
-                my $Total_Count = $FiveP + $ThreeP + $Non_Canonical;
-                my @Start_n_Stop = ($miRs->{"$miRs->{$i} 5p"},$miRs->{"$miRs->{$i} 5p END"},$miRs->{"$miRs->{$i} 3p"},$miRs->{"$miRs->{$i} 3p END"});
+        my $Total_Count = $FiveP + $ThreeP + $Non_Canonical;
+        my @Start_n_Stop = ($miRs->{"$miRs->{$i} 5p"},$miRs->{"$miRs->{$i} 5p END"},$miRs->{"$miRs->{$i} 3p"},$miRs->{"$miRs->{$i} 3p END"});
 
-                $JS_premiR_Var .= "[$New_Index,'$miRs->{$i}','$miRs->{$miRs->{$i}}','',$Start_n_Stop[0],$Start_n_Stop[1],$Start_n_Stop[2],$Start_n_Stop[3],$Total_Count,$FiveP, $ThreeP, $Non_Canonical,".$DataSet_miRs->{"$New_Index AVG LENGTH"};
-                $JS_premiR_Var .= ",$FiveP_5pIsomiR,$FiveP_3pIsomiR,$ThreeP_5pIsomiR,$ThreeP_3pIsomiR,$Editing],\n";
+		$JS_premiR_Var .= "[$New_Index,'$miRs->{$i}','$miRs->{$miRs->{$i}}','',$Start_n_Stop[0],$Start_n_Stop[1],$Start_n_Stop[2],$Start_n_Stop[3],$Total_Count,$FiveP, $ThreeP, $Non_Canonical,".$DataSet_miRs->{"$New_Index AVG LENGTH"};
+        $JS_premiR_Var .= ",$FiveP_5pIsomiR,$FiveP_3pIsomiR,$ThreeP_5pIsomiR,$ThreeP_3pIsomiR,$Editing],\n";
 		$JS_premiR_Var =~ s/\r//g;
-                $JS_Genome_Coords .= "[$New_Index, ".$Genome_Coords->{$miRs->{$i}}."],";
+        $JS_Genome_Coords .= "[$New_Index, ".$Genome_Coords->{$miRs->{$i}}."],";
 
-                $New_Index++;
-              #  print $Output;
+        $New_Index++;
+        #  print $Output;
 
-        }
-        else
-        {	$JS_Genome_Coords .= "['$miRs->{$i}', ".$Genome_Coords->{$miRs->{$i}}."],";	}
+    }
+    else
+    {	$JS_Genome_Coords .= "['$miRs->{$i}', ".$Genome_Coords->{$miRs->{$i}}."],";	}
 
 }
 
