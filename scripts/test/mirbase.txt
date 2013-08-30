@@ -1,3 +1,4 @@
+@MIRSPRING BAM_to_Intermediate.pl settings<br>Species (-s): hsa<br>Minimum length (-ml): 0<br>BAM filename (-bam): ../data/mirbase.bam<br>Number of mismatches (-mm): 1<br>Non template addition (-nta): OFF<br>Number of flanking nucleotides (-flank): 0<br>Reference format (-ref): 1<br>Color mismatches (-cmm): 6<br>Minimum mapping quality (-mq): 0<br>GFF coordinate file (-gff): ../miRbase_Files/hsa.gff2	 <br>Mature sequence file (-mat): ../miRbase_Files/mature.fa	<br>Hairpin precursor file (-pre): ../miRbase_Files/hsa.0nt.fasta.<br>Intermediate file (-out): test/mirbase.txt<br>
 @RG	ID:001	CN:QCMG	SM:sample
 
 miRNA idex	Start pos	miRNA name	Freq	Length	ERROR

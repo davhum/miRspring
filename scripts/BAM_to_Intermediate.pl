@@ -9,11 +9,12 @@
 # The following command will list the options available with this script:
 #   perl Bam_to_Intermediate.pl
 #
-# Version 1.1
-#			- Added: filter for minimum mapping quality.
-#			
-#			- Fixed: if using miRBase as a reference no read contains more than 1 mismatch
-#			- Fixed: Now correctly processes 0 mismatches.
+# Version 1.2
+#	- Added: Non template addition feature (up to 2nt). This will continue to be worked up
+#	-
+#	- Fixed interrogating BAM file with just numerical chromosome ID (previously only work on records with a "chr" prefix
+#	- Fixed samtools recognition
+#	
 #
 # Author: David Thomas Humphreys
 # Copyright (C) 2013, Victor Chang Cardiac Research Institute
@@ -39,9 +40,9 @@ use strict;
 #### Before running the software it is recommended to set the following SIX global variables. 
 
 ## The three variables below should contain the DIRECTORY of the miRbase files. 
-my $Precursor_GFF_Dir = " SET THE DIRECTORY WHERE mirbase gff files are located";
-my $Precursor_Seq_Dir = " SET THE DIRECTORY WHERE mirbase precursor files (hairpin.fa) are located";
-my $Mature_Seq_Dir = "SET THE DIRECTORY WHERE mirbase mature files (mature.fa) are located";
+my $Precursor_GFF_Dir  = "../miRbase_Files/";
+my $Precursor_Seq_Dir  = "../miRbase_Files/";
+my $Mature_Seq_Dir 	   = "../miRbase_Files/";
 my $Samtools_Directory = '';	# ONLY Set this if the samtools directory if not set in the global path variable.
 
 ## This states the default mapping strategy you use to map data sets, either to a genome or a local version of miRbase. 
@@ -49,7 +50,7 @@ my $ReferenceFormat = 0;	# 0 = genome	1 = mirbase
 
 ## This states the default flanking sequence you provide in making a miRspring document. 
 ## If you are using unmodified miRbase files set this to 0 
-my $Flank = 35;			# Flanking sequence on each side of precursor
+my $Flank = 0;	# Flanking sequence on each side of precursor
 ####-------------------------------------------------------------------------------------------------------------------------------
 
 my $parameters = {};
@@ -61,21 +62,25 @@ sub load_default_reference_files()
 #### Before running the software it is recommended to set the default miRBase filenames
 
 
-	$parameters->{gff} = "$Precursor_GFF_Dir/ ENTER FILENAME HERE, if using miRBase files use: $parameters->{species}.gff2", if (! defined $parameters->{gff});
-	$parameters->{precursor_seq_file} = "$Precursor_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: hairpin.fa", if (! defined $parameters->{precursor_seq_file});
+	$parameters->{gff} 			= "$Precursor_GFF_Dir/ TYPE FILE NAME HERE", if (! defined $parameters->{gff});
+	$parameters->{precursor_seq_file} 	= "$Precursor_Seq_Dir/ TYPE FILE NAME HERE", if (! defined $parameters->{precursor_seq_file});
+	$parameters->{mature_seq_file} 	= "$Precursor_Seq_Dir/ TYPE FILE NAME HERE", if (! defined $parameters->{precursor_seq_file});
 ####-------------------------------------------------------------------------------------------------------------------------------
 
 	$parameters->{flank}     = $Flank, if (! defined $parameters->{flank});
 	$parameters->{reference_format} = $ReferenceFormat, if (! defined $parameters->{reference_format});
-    $parameters->{colour_mm} = 6, if (! defined $parameters->{colour_mm});
+	$parameters->{colour_mm} = 6, if (! defined $parameters->{colour_mm});
 	$parameters->{mapQual}   = 0, if (! defined $parameters->{mapQual});
+	$parameters->{nonTemplate} = 'OFF', if (! defined $parameters->{nonTemplate});
 	$parameters->{mismatch} = 1, if (! defined $parameters->{mismatch});
+	$parameters->{mismatch} = 0, if ($parameters->{nonTemplate} ne 'OFF');
+	$parameters->{mismatch} = 2, if (($parameters->{nonTemplate} <0) && ($parameters->{nonTemplate} > 2)); # hopefully this will catch any errors
 }
 
 
-my $miRspring;		# Global hash to save final output
+my $miRspring;			# Global hash to save final output
 my $antisense_miRs;		# Global hash to save potential antisense or bidirectional miRs
-my $ChromStats;         	# Global hash to save chromosome numbers
+my $ChromStats;         # Global hash to save chromosome numbers
 my $Flanking_Seq;
 
 # Test to see if samtools is installed correctly
@@ -84,8 +89,8 @@ my $Flanking_Seq;
 	my @SamtoolTest = `$cmd 2>&1`;		# The "2>&1" redirects STDERR to STDOUT. 
 
 	foreach (@SamtoolTest)
-	{	my $Temp;
-		if ($_ =~ m/^(Version: .*?) \(.*?$/)
+	{	
+		if ($_ =~ m/^(Version: .*?)$/)
 		{	$Samtools_Version = $1;	}
 	}
 	if ($Samtools_Version eq '')
@@ -100,24 +105,25 @@ my $Flanking_Seq;
 sub usage {
 	print "\nUsage: $0 \n\n\t ";
 
-    	print "REQUIRED \n\t";
-    	print "-bam <input bam file> \n\t";
-    	print "-ml <minimum length> \n\t";
-    	print "-s <three letter species code>\n\t";
+    print "REQUIRED \n\t";
+    print "-bam <input bam file> \n\t";
+    print "-ml <minimum length> \n\t";
+    print "-s <three letter species code>\n\t";
 
-    	print "-out <output file name with full path> \n\n\t";
+    print "-out <output file name with full path> \n\n\t";
 
-    	print "OPTIONAL \n\t";
-    	print "-mm <mismatches: '0' or '1', default is 1> \n\t";
-    	print "-gff <Gene features file (gff), default is defined in script> \n\t";
-    	print "-mat <Mature sequence file, default is defined in script> \n\t";
-    	print "-pre <Precursor file, default is defined in script> \n\t";
-    	print "-flank <length of flanking sequence>\n\t";
-		print "-ref <format of reference: \'0\' (genome) or \'1\' (custom), 0 (genome) is default\n\t";
-		print "-cmm <color mismatch O(SOLiD data): 0 - 6, default is 6>\n\t";
-		print "-mq <minimum mapping quality, default is 0>\n\n\n";
+    print "OPTIONAL \n\t";
+    print "-mm <mismatches: '0' or '1', default is 1> \n\t";
+	print "-nta <Non template addition: 1,2  or 'OFF', default is 'OFF'. When set -mm default is set to 0\n\t";
+    print "-gff <Gene features file (gff), default is defined in script> \n\t";
+    print "-mat <Mature sequence file, default is defined in script> \n\t";
+    print "-pre <Precursor file, default is defined in script> \n\t";
+    print "-flank <length of flanking sequence>\n\t";
+	print "-ref <format of reference: \'0\' (genome) or \'1\' (custom), 0 (genome) is default\n\t";
+	print "-cmm <color mismatch O(SOLiD data): 0 - 6, default is 6>\n\t";
+	print "-mq <minimum mapping quality, default is 0>\n\n\n";
 
-    	exit(1);
+    exit(1);
 }
 if(scalar(@ARGV) == 0){
     usage();
@@ -126,20 +132,19 @@ if(scalar(@ARGV) == 0){
 # Parse the Command Line
 &parse_command_line($parameters, @ARGV);
 
-
-
-sub parse_command_line {
-
+sub parse_command_line 
+{
     my($parameters, @ARGV) = @_;
 
     my $next_arg;
 
-    while(scalar @ARGV > 0){
-        $next_arg = shift(@ARGV);
+    while(scalar @ARGV > 0)
+	{	$next_arg = shift(@ARGV);
         if($next_arg eq "-s"){ $parameters->{species} = shift(@ARGV); }
         elsif($next_arg eq "-ml"){ $parameters->{min_length} = shift(@ARGV); }
         elsif($next_arg eq "-bam"){ $parameters->{bam} = shift(@ARGV); }
         elsif($next_arg eq "-mm"){ $parameters->{mismatch} = shift(@ARGV); }
+		elsif($next_arg eq "-nta"){ $parameters->{nonTemplate} = shift(@ARGV); }
         elsif($next_arg eq "-gff"){ $parameters->{gff} = shift(@ARGV); }
         elsif($next_arg eq "-mat"){ $parameters->{mature_seq_file} = shift(@ARGV); }
         elsif($next_arg eq "-pre"){ $parameters->{precursor_seq_file} = shift(@ARGV); }
@@ -152,19 +157,21 @@ sub parse_command_line {
 
         else { print "Invalid argument: $next_arg"; usage(); }
     }
+	print "\nFlank is ".$parameters->{flank};
 
 	# Check all essential options have been entered.
-    	my $Error_Log = '';
-    	$Error_Log .= "Species undefined (-s)\n\t", if (! defined $parameters->{species});
-    	$Error_Log .= "No BAM file defined (-bam)\n\t", if (! defined $parameters->{bam});
-    	$Error_Log .= "No output file defined (-out)\n\t", if (! defined $parameters->{output});
-     	$Error_Log .= "Minimum length not defined (-ml)\n\t", if (! defined $parameters->{min_length});
-    	if ($Error_Log ne '')
-    	{	print "\nThe following essential option(s) have not been defined:\n\t$Error_Log\n\n";
-		usage();
-	}
+    my $Error_Log = '';
+    $Error_Log .= "Species undefined (-s)\n\t", if (! defined $parameters->{species});
+    $Error_Log .= "No BAM file defined (-bam)\n\t", if (! defined $parameters->{bam});
+    $Error_Log .= "No output file defined (-out)\n\t", if (! defined $parameters->{output});
+    $Error_Log .= "Minimum length not defined (-ml)\n\t", if (! defined $parameters->{min_length});
+    if ($Error_Log ne '')
+    {	print "\nThe following essential option(s) have not been defined:\n\t$Error_Log\n\n";
+	usage();
+}
 
 	# Set the sequence files if user did not specify
+
 	&load_default_reference_files($parameters->{species});
 
 
@@ -211,7 +218,6 @@ while (<PRECURSOR_GFF>)
 	{	print "\nSuspect miRNA genome coordinate from $parameters->{species} gff file : $Record[0], max should be ".$RefFields->{"Max"};
 		next;
 	}
-#	$Record[8] = m/($parameters->{species}-.*?)\"/;
 	$Record[8] = m/\"(\w\w\w-\w\w\w-.*?)\"/;
 
 	$i = 0, if ($last_chr ne $Record[0]);
@@ -264,7 +270,8 @@ if ($parameters->{reference_format} == 0)
 		}
 		print "\nChr $RefFields->{$i} ";
 		while($miR_Start[$i][$j] > 0)
-		{	my $Command = "$Samtools_Directory"."samtools view $parameters->{bam} chr$Chrom:$miR_Start[$i][$j]-$miR_End[$i][$j]";
+		{	my $PreLabel = $RefFields->{"prelabel"};
+			my $Command = "$Samtools_Directory"."samtools view $parameters->{bam} $PreLabel$Chrom:$miR_Start[$i][$j]-$miR_End[$i][$j]";
 			print ".";
 			my $Start = $miR_Start[$i][$j] - $parameters->{flank};
 			my $End = $miR_End[$i][$j] + $parameters->{flank};
@@ -284,6 +291,7 @@ else	# mirbase reference
 	for(my $i = 1; $i < $RefIndex->{Max}; $i++)
 	{	my $samcmd = "$Samtools_Directory"."samtools view $parameters->{bam} $RefIndex->{$i}";
 		my @sam = `$samcmd`;
+		print ".";
 		Extract_From_miRBase_Reference($i, @sam);
 	}
 }
@@ -316,7 +324,7 @@ close OUTPUT;
 exit(0);
 
 sub Extract_miRD_From_Sam
-{   my $Chr = shift;
+{   	my $Chr = shift;
 	my $Start = shift;
 	my $End = shift;
 	my $Index = shift;
@@ -337,7 +345,7 @@ sub Extract_miRD_From_Sam
 		next, if ($Record[4] < $parameters->{mapQual});	# Check read has requested mapping quality.
 		
 		
-		$Record[2] =~ m/chr(.*?)$/;
+		$Record[2] =~ m/$RefFields->{"prelabel"}(.*?)$/;
 		my $Chr = $1;
 		$Chr = $ChromStats->{$parameters->{species}}->{"M"}, if ($1 eq 'M');
 		$Chr = $ChromStats->{$parameters->{species}}->{"X"}, if ($1 eq 'X');
@@ -369,8 +377,48 @@ sub Extract_miRD_From_Sam
 
 			my $Error;
 			if ($_ =~ m/NM:i:(\d+)/)
-			{   # miRspring only set up to accept 1 mismatch
-				if ($parameters->{mismatch} ne "OFF")
+			{   # miRspring only set up to accept 1 internal mismatch (editing event) or 2 mismatches at end of read (Non template addition events).
+				if ($parameters->{nonTemplate} ne "OFF" )
+				{	if (($1 > 0) && ($AntisenseFlag == 0))
+					{	# Need to grab reference and then compare to the Bam field.
+						my $StartPos = $Precursor_Pos;
+						my $Reference_Seq = substr($Precursor_Seqs->{$Name},$StartPos,$length);
+						$Error = IsMatch($Reference_Seq,$RefSeq);
+
+						my @Error_Position_List = split(' ',$Error); # 10GA = nucleotide 10 changes from G to A
+						# Now check to see if first "mismatch" is within a defined distance from end of tag.
+						my $NTAflag = 0;
+						foreach my $ErrorCode(@Error_Position_List)
+						# if (($length - $Error_Position_List[0]) <= $parameters->{nonTemplate})
+						{	
+							$ErrorCode =~ /^(\d+)\w(\w)/;
+							my $ErrorPosition = $1;
+							my $Replace = lc($2);
+
+							if (($length - $ErrorPosition) < $parameters->{nonTemplate})
+							{	# we have a NTA. Consider all remaining sequences a NTA event
+								if ($NTAflag == 0)
+								{	$Error = "_$Replace";	}
+								else	# only allowing a 2nt NTA, therefore if enter this part it must be last base
+								{	$Error .= "$Replace";
+									$NTAflag = 0;
+								}
+								$NTAflag = $ErrorPosition, if ($NTAflag == 0);
+							}
+							else
+							{	$Error = '';	}
+						}
+						# else we ignore all errors and report 						
+						if (($NTAflag !=0) && ($NTAflag - $length < 0))
+						{   # The last base matched reference, convert it to lower case
+							my $NTAseq = lc(substr($Reference_Seq, $length-1));
+							$Error .= "$NTAseq";
+						#	print "\n$Error from $Reference_Seq vs $RefSeq with length of $length @Error_Position_List", if (length($Error) > 3);
+						}
+						#print "\n$Error";
+					}
+				}
+				elsif ($parameters->{mismatch} ne "OFF")
 				{
 					if (($1 > 1) || ($1 > $parameters->{mismatch}))
 					{	next;	}
@@ -430,7 +478,7 @@ sub Extract_From_miRBase_Reference()
 	{	# QName			Flag	Rname		pos	mapQ CIGAR	RNext TLen
 		# 1396_563_435_F3	0	hsa-mir-671	29	100	23M	*	0	23	AGGAAGCCCTGGAGGGGCTGGAG	26>8?&&@:?2*<>7/)5?9/-=	NM:i:0  CM:i:2	CS:Z:T32020230021222002321022220302000303	XI:Z:hsa-miR-671-5p|{hsa-miR-671-5p}|29_52|	CQ:Z:26>8?&&@:?2*<>7/)5?9/-=/%9%8<<%)927  IH:i:1
 		my @Record = split("\t",$_);
-		next, if ($Record[4] > $parameters->{mapQual});	# Check read has requested mapping quality.
+		next, if ($Record[4] < $parameters->{mapQual});	# Check read has requested mapping quality.
 		
 		if ($Record[5] =~ m/(\d+)M.*?/)
 		{	my $length = $1;
@@ -458,10 +506,11 @@ sub Extract_From_miRBase_Reference()
 
 sub Extract_Header_From_Sam
 {  	my @Sam_Input = @_;
-	my $KeepThis = '';
+	my $KeepThis = extract_miRspring_Settings();
 	my $Ref_Index;	# Hash lookup for all references, whether they be chr or miRs.
 	my $Ref_Count = 1;	# Keeps track of chromosome number (or miRbase entries)
 	my $Obscure_Refs;	# Hash to record non-numerical indexes
+	my $Chr_prelabel = 'chr';	# To help descriminate between bam files that use chr1 or just 1
 
 	foreach(@Sam_Input)
 	{
@@ -483,8 +532,10 @@ sub Extract_Header_From_Sam
 				else
 				{	$Obscure_Refs->{$Contig} = 1;	}	# Save the name of non integer contigs		
 			}
-			else # miRbase mapping
-			{	$Ref_Index->{$Ref_Count++} = $Chr_Description;		}
+			else # miRbase mapping OR chromosomes without a 'chr' prelabel
+			{	$Ref_Index->{$Ref_Count++} = $Chr_Description;
+				$Chr_prelabel = '';
+			}
 		}
 	}
 	$KeepThis =~ s/"/\\"/g;
@@ -500,7 +551,7 @@ sub Extract_Header_From_Sam
        {	$Ref_Index->{$Ref_Count} = 'Y'; 
 		$Ref_Index->{'Y'} = $Ref_Count++;
 	}
-	if (defined $Obscure_Refs->{'M'})
+	if (defined $Obscure_Refs->{'M'}) # What about reference annotated at MT??
        {	$Ref_Index->{$Ref_Count} = 'M';
 		$Ref_Index->{'M'} = $Ref_Count++;
 	}
@@ -513,9 +564,29 @@ sub Extract_Header_From_Sam
 		$Ref_Index->{$keys} = $Ref_Count++;
 	}
 	$Ref_Index->{"Max"} = $Ref_Count;
+	$Ref_Index->{"prelabel"} = $Chr_prelabel;
 	return ($KeepThis, $Ref_Index);
 }
 
+sub extract_miRspring_Settings()
+{	my $miRspringHeader ="\@MIRSPRING BAM_to_Intermediate.pl settings<br>";
+        $miRspringHeader   .= "Species (-s): ".$parameters->{species}."<br>";
+        $miRspringHeader   .= "Minimum length (-ml): ".$parameters->{min_length}."<br>";
+        $miRspringHeader   .= "BAM filename (-bam): ".$parameters->{bam}."<br>";
+        $miRspringHeader   .= "Number of mismatches (-mm): ".$parameters->{mismatch}."<br>";
+	$miRspringHeader   .= "Non template addition (-nta): ".$parameters->{nonTemplate}."<br>";
+        $miRspringHeader   .= "Number of flanking nucleotides (-flank): ".$parameters->{flank}."<br>";
+        $miRspringHeader   .= "Reference format (-ref): ".$parameters->{reference_format}."<br>";
+        $miRspringHeader   .= "Color mismatches (-cmm): ".$parameters->{colour_mm}."<br>";
+		$miRspringHeader   .= "Minimum mapping quality (-mq): ".$parameters->{mapQual}."<br>";
+		# Next three entries have a unique mixture of characters before the <br> so that the Intermediate_to_miRspring.pl script can read these parameters directly
+        $miRspringHeader   .= "GFF coordinate file (-gff): ".$parameters->{gff}."\t <br>";
+        $miRspringHeader   .= "Mature sequence file (-mat): ".$parameters->{mature_seq_file}."\t<br>";
+        $miRspringHeader   .= "Hairpin precursor file (-pre): ".$parameters->{precursor_seq_file}.".<br>";
+        $miRspringHeader   .= "Intermediate file (-out): ".$parameters->{output}."<br>\n";
+		
+		return $miRspringHeader;
+}
 
 sub IsMatch()
 {	my $str_source = shift;

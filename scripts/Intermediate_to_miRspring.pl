@@ -6,9 +6,9 @@
 #      The following command will list the options available with this script:
 #               perl Intermediate_to_miRspring.pl
 #
-# Version 1.1
-#		- Added: freqtag filter (filter sequences that do not have a minimum count)
-#		- Added: starttagfreq   (filters sequences that have a common start position and that do not make a minimum count). 
+# Version 1.2
+#		- Added non-template addition feature (up to 2nt)
+#		- Script settings are now saved and displayed in final miRspring document.
 #			
 #	
 # Author: David Thomas Humphreys
@@ -30,7 +30,7 @@
 #!/usr/bin/perl
 
 use strict;
-use Math::Round;
+
 
 my $parameters = {};
 
@@ -38,55 +38,83 @@ my $parameters = {};
 #### Before running the scripts it is recommended to set the following FOUR global variables.
 
 ## The three variables below should contain the DIRECTORY of the miRbase files.
-my $Precursor_GFF_Dir = "ENTER DIRECTORY where gff file resides";
-my $Precursor_Seq_Dir = "ENTER DIRECTORY where hairpin.fa (or equivalent) resides";
-my $Mature_Seq_Dir = "ENTER DIRECTORY where mature.fa resides";
+my $Precursor_GFF_Dir	= "ENTER DIRECTORY where gff file resides";
+my $Precursor_Seq_Dir	= "ENTER DIRECTORY where hairpin.fa (or equivalent) resides";
+my $Mature_Seq_Dir		= "ENTER DIRECTORY where mature.fa resides";
 my $JavaScriptTemplateFile      = "./javascriptTEMPLATE.txt";	# Set the full path so that you do not have to execute this script within the installed directory.
 
 ####-------------------------------------------------------------------------------------------------------------------------------
 
+
+my $HeaderInfo = "var HeaderInfo = new Object();\n";	# Will store header information PLUS script settings for miRspring document.
 
 sub load_default_reference_files()
 {
 ####------SETUP B -------------------------------------------------------------------------------------------------------------------------
 ### Before running the scripts recommend to set the default mirbase file names
 
-    $parameters->{gff} = "$Precursor_GFF_Dir/ ENTER FILENAME HERE, if using default miRbase files use: $parameters->{species}.gff2", if (! defined $parameters->{gff});
-    $parameters->{precursor_seq_file} = "$Precursor_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: hairpin.fa", if (! defined $parameters->{precursor_seq_file});
-	$parameters->{mature_seq_file} = "$Mature_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: mature.fa", if (! defined $parameters->{mature_seq_file});
+#$parameters->{gff} = "$Precursor_GFF_Dir/ ENTER FILENAME HERE, if using default miRbase files use: $parameters->{species}.gff2", if (! defined $parameters->{gff});
+#$parameters->{precursor_seq_file} = "$Precursor_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: hairpin.fa", if (! defined $parameters->{precursor_seq_file});
+#$parameters->{mature_seq_file} = "$Mature_Seq_Dir/ ENTER FILENAME HERE, if using miRBase files use: mature.fa", if (! defined $parameters->{mature_seq_file});
 ####-------------------------------------------------------------------------------------------------------------------------------
 
+	#    $miRspringHeader   .= "GFF coordinate file (-gff): ".$parameters->{gff}."\t <br>";
+	#    $miRspringHeader   .= "Mature sequence file (-mat): ".$parameters->{mature_seq_file}."\t<br>";
+	#    $miRspringHeader   .= "Hairpin precursor file (-pre): ".$parameters->{precursor_seq_file}.".<br>";
+	if ((! defined  $parameters->{gff}) || (! defined  $parameters->{mature_seq_file}) || (! defined  $parameters->{percursor_seq_file}))
+	{	# Search through input file to see if the required files were previously declared and saved
+		my @Check;
+		$Check[0] = 1, if (! defined  $parameters->{gff});
+		$Check[1] = 1, if (! defined $parameters->{mature_seq_file});
+		$Check[2] = 1, if (! defined $parameters->{precursor_seq_file});
+		open MIRSPRING_DATA, $parameters->{input} or  die "Cannot open the raw miRspring data file ($parameters->{input})";
+		while (<MIRSPRING_DATA>)
+		{
+			if ($_ =~ m/^\@MIRSPRING/)
+			{	chomp();
+				$HeaderInfo .= "\nHeaderInfo.MIRSPRING = \"$_\";";
+				if ($_ =~ m/-gff\): (.*?)\t </)
+				{	$parameters->{gff} = $1, if (! defined  $parameters->{gff});	
+					$Check[0]--;
+				}
+				if ($_ =~ m/-mat\): (.*?)\t<br>/)
+				{	$parameters->{mature_seq_file} = $1, if (! defined  $parameters->{mature_seq_file});	
+					$Check[1]--;
+				}
+				if ($_ =~ m/-pre\): (.*?)\.</)
+				{	$parameters->{precursor_seq_file} = $1, (! defined  $parameters->{percursor_seq_file});	
+					$Check[2]--;
+				}
+				last, if (($Check[0] < 1) && ($Check[1] < 1) && ($Check[2] < 1)); # Save reading through the whole file. Also means first entry gets saved over later entries
+			}
+		}
+		close MIRSPRING_DATA;
+	}
 
 
 	$parameters->{mintag} = 0, if (! defined $parameters->{mintag});
 	$parameters->{tagfreq} = 0, if (! defined $parameters->{tagfreq});	
 	$parameters->{starttagfreq} = 0, if (! defined $parameters->{starttagfreq});	
-    $parameters->{flank} = 0, if (! defined $parameters->{flank});
+	$parameters->{flank} = 0, if (! defined $parameters->{flank});
 	$parameters->{output} =  "$parameters->{input}".".html", if (! defined $parameters->{output});
-    $parameters->{mbase} = 3, if (! defined $parameters->{mbase});
-    $parameters->{mismatch} = 1, if (! defined $parameters->{mismatch});
-    $parameters->{showflank} = 0, if (! defined $parameters->{showflank});
-    $parameters->{seedclass} = 0, if (! defined $parameters->{seedclass});
-    $parameters->{normalisation} = 0, if (! defined $parameters->{normalisation});
-
-# NEED TO CHECK NUMBERS
-
-#    if ($parameters->{species} eq 'oar')
-#	{	$parameters->{mature_file} = '/long/reference/sheep/oar mature.fa';	}
-
+	$parameters->{mbase} = 3, if (! defined $parameters->{mbase});
+	$parameters->{mismatch} = 1, if (! defined $parameters->{mismatch});
+	$parameters->{showflank} = 0, if (! defined $parameters->{showflank});
+	$parameters->{seedclass} = 0, if (! defined $parameters->{seedclass});
+	$parameters->{normalisation} = 0, if (! defined $parameters->{normalisation});
 }
 
 
 
 sub usage {
-    print "\nUsage: $0 \n\n\t ";
+	print "\nUsage: $0 \n\n\t ";
 
-    print "REQUIRED \n\t";
-    print "-in <input file> \n\t";
-    print "-s <three letter species code>\n\t";
+	print "REQUIRED \n\t";
+	print "-in <input file> \n\t";
+	print "-s <three letter species code>\n\t";
 
-    print "OPTIONAL \n\t";
-    print "-out <output file name with full path> \n\n\t";
+	print "OPTIONAL \n\t";
+	print "-out <output file name with full path> \n\n\t";
 	print "-mm <mismatches: '0' or '1', default is 1> \n\t";
 	print "-gff <Gene features file (gff), default is defined in script> \n\t";
 	print "-mat <Mature sequence file, default is defined in script> \n\t";
@@ -97,16 +125,14 @@ sub usage {
 	print "-tagfreq <minimum sequence count for all unique sequence tags, default = 0>\n\t";
 	print "-starttagfreq <minimum sequence count for all unique sequence tags, default = 0>\n\t";
 	print "-comment <message for top of miRspring document>\n\t";
-    print "-mbase <number of nucleotides to extend up and downstream to accept tag as a processed miRNA, default = 3>\n\t";
-    print "-mismatch <number of nucleotide mismatches to display, default = 1>\n\t";
+	print "-mbase <number of nucleotides to extend up and downstream to accept tag as a processed miRNA, default = 3>\n\t";
+	print "-mismatch <number of nucleotide mismatches to display, default = 1>\n\t";
 	print "-showflank <set the miRspring document to display the flanking sequence as default. No = 0, Yes = 1. Default = 0>\n\t";
-    print "-seedclass <0 = seeds only from miRs; 1 = seeds from all classes, default = 0>\n\t";
-    print "-normalisation < 0 = raw counts; 1 = RPM miRs; 2 = RPM all RNA classes in document, default = 0>\n\n\n";
+	print "-seedclass <0 = seeds only from miRs; 1 = seeds from all classes, default = 0>\n\t";
+	print "-normalisation < 0 = raw counts; 1 = RPM miRs; 2 = RPM all RNA classes in document, default = 0>\n\n\n";
 
-    exit(1);
+	exit(1);
 }
-
-
 
 if(scalar(@ARGV) == 0)
 {    usage();	}
@@ -130,14 +156,14 @@ sub parse_command_line
 
 	if ($next_arg eq "-s"){ $parameters->{species} = shift(@ARGV);  }
 	elsif($next_arg eq "-in"){ $parameters->{input} = shift(@ARGV); }
-    elsif($next_arg eq "-ml"){ $parameters->{min_length} = shift(@ARGV); }
-    elsif($next_arg eq "-mm"){ $parameters->{mismatch} = shift(@ARGV); }
-    elsif($next_arg eq "-gff"){ $parameters->{gff} = shift(@ARGV); }
-    elsif($next_arg eq "-mat"){ $parameters->{mature_seq_file} = shift(@ARGV); }
-    elsif($next_arg eq "-pre"){ $parameters->{precursor_seq_file} = shift(@ARGV); }
-    elsif($next_arg eq "-out"){ $parameters->{output} = shift(@ARGV); }
-    elsif($next_arg eq "-flank"){ $parameters->{flank} = shift(@ARGV); }
-    elsif($next_arg eq "-ref"){ $parameters->{reference_format} = shift(@ARGV); }
+	elsif($next_arg eq "-ml"){ $parameters->{min_length} = shift(@ARGV); }
+	elsif($next_arg eq "-mm"){ $parameters->{mismatch} = shift(@ARGV); }
+	elsif($next_arg eq "-gff"){ $parameters->{gff} = shift(@ARGV); }
+	elsif($next_arg eq "-mat"){ $parameters->{mature_seq_file} = shift(@ARGV); }
+	elsif($next_arg eq "-pre"){ $parameters->{precursor_seq_file} = shift(@ARGV); }
+	elsif($next_arg eq "-out"){ $parameters->{output} = shift(@ARGV); }
+	elsif($next_arg eq "-flank"){ $parameters->{flank} = shift(@ARGV); }
+	elsif($next_arg eq "-ref"){ $parameters->{reference_format} = shift(@ARGV); }
 	elsif($next_arg eq "-mintag"){ $parameters->{mintag} = shift(@ARGV); }
 	elsif($next_arg eq "-tagfreq"){ $parameters->{tagfreq} = shift(@ARGV); }
 	elsif($next_arg eq "-starttagfreq"){ $parameters->{starttagfreq} = shift(@ARGV); }
@@ -157,26 +183,24 @@ sub parse_command_line
     # Check all essential options have been entered.
     my $Error_Log = '';
     $Error_Log .= "Species undefined (-s)\n\t", if (! defined $parameters->{species});
-	$Error_Log .= "No output file defined (-in)\n\t", if (! defined $parameters->{input});
-
-        if ($Error_Log ne '')
-        {       print "\nThe following essential option(s) have not been defined:\n\t$Error_Log\n\n";
+    $Error_Log .= "No output file defined (-in)\n\t", if (! defined $parameters->{input});
+    if ($Error_Log ne '')
+    {       print "\nThe following essential option(s) have not been defined:\n\t$Error_Log\n\n";
                 usage();
-        }
+    }
 
-        # Set the sequence files if user did not specify
-        $parameters->{reference_format} = 0, if (! defined $parameters->{reference_format});
+    # Set the sequence files if user did not specify
+    $parameters->{reference_format} = 0, if (! defined $parameters->{reference_format});
 
-        &load_default_reference_files($parameters->{species});
+    &load_default_reference_files($parameters->{species});
 
-
-        print "\nAll parameters for making miRspring document\n";
-        while (my ($key, $value) = each %$parameters)
-        {       print "$key\t$value\n"; }
-
+    print "\n\n**************    All parameters for Intermediate_to_miRspring script ********************************\n";
+    while (my ($key, $value) = each %$parameters)
+    {       print "$key\t$value\n"; }
+	print "\n********************************************************************************************";
 }
 
-my $Hairpin_Spacer = 35;	# The length of flanking sequence around miRBase hairpin. HAVE NOT IMPLEMENTED THIS YET
+
 my $IsomiR_Range = 3;		# The accepted window upstream or downstream relative to miRBase to accept a miR as genuin
 
 
@@ -281,8 +305,8 @@ close MATURE;
 
 #### Load raw data into memory
 open MIRDSPRING_DATA, $parameters->{input} or  die "Cannot open the raw mirdspring data file ($parameters->{input})";
-my $HeaderInfo = "var HeaderInfo = new Object();\n";
 my $Raw_data;
+$HeaderInfo .= ScriptSettings();
 while(<MIRDSPRING_DATA>)
 {
 	if ($_ =~ m/^\@RG/) # @RG     ID:Library6_6   PL:SOLID        PU:2_4  LB:Library6     PI:0    DS:50F  DT:2012-06-01T15:42:33+1000     SM:Traude_Nico_Bene_3
@@ -303,6 +327,8 @@ while(<MIRDSPRING_DATA>)
 		s{(\t)}{((++$count == 6) || ($count == 12)) ? "<br>" : $1 }ige;
 		$HeaderInfo .= "\nHeaderInfo.CO = \"$_\";";
 	}
+	elsif ($_ =~ m/^\@MIRSPRING/)
+	{		}  	# Have alread saved this information. Do nothing as don't wont to double up.
 	elsif ($_ =~ m/^\@/)
 	{	my $count =0;
 		chomp();
@@ -316,14 +342,16 @@ while(<MIRDSPRING_DATA>)
 	{	
 		my ($Index,$Start, $miR_Name, $Freq, $Length, $Error) = ($1,$2,$3,$4,$5,$6);
 		next, if ($Freq < $parameters->{tagfreq});
-		if ($Error =~ m/^E(\d+)E\d+(\w)to(\w)/)
+		if ($Error =~ m/^E(\d+)E\d+(\w)to(\w)/) #old format
 		{	$Error = "$1$2$3";	}
-		elsif ($Error =~ m/^(\d+\w\w)/)
+		elsif ($Error =~ m/^(\d+\w\w)/) # mismatch or possible editing
+		{	$Error = $1;	}
+		elsif ($Error =~ m/^(_\w\w)/) # Non template addition
 		{	$Error = $1;	}
         else
         {	$Error = 'NONE';	}
-			$Raw_data->{$miR_Name}->{$Start}->{$Length}->{$Error} += $Freq;
-        }
+		$Raw_data->{$miR_Name}->{$Start}->{$Length}->{$Error} += $Freq;
+    }
 }
 close MIRDSPRING_DATA;
 
@@ -366,9 +394,9 @@ for (my $i = 0; $i < $Order;$i++)
 					$CummulativeStartCount += $Freq;
 				}
 			}
-			print "\nDebug $CummulativeStartCount", if ($miR_ID eq "hsa-mir-34c");
+			#print "\nDebug $CummulativeStartCount", if ($miR_ID eq "hsa-mir-34c");
 			next, if ($parameters->{starttagfreq} > $CummulativeStartCount);
-						print " .....pass", if ($miR_ID eq "hsa-mir-34c");
+			#print " .....pass", if ($miR_ID eq "hsa-mir-34c");
 		}
 		
 
@@ -417,7 +445,11 @@ for (my $i = 0; $i < $Order;$i++)
     {
 		$DataSet_miRs->{$New_Index} = $miRs->{$i};	# Save miR index
 		$DataSet_miRs->{"$New_Index TOTAL"} = $Hairpin_Total_Counts;
-		$DataSet_miRs->{"$New_Index AVG LENGTH"} = nearest(0.1,$miR_Avg_Length/$Hairpin_Total_Counts);
+		$DataSet_miRs->{"$New_Index AVG LENGTH"} = (int($miR_Avg_Length/$Hairpin_Total_Counts*10))/10;
+#		my $AverageLength_Fix = (($miR_Avg_Length/$Hairpin_Total_Counts) *10);
+		
+#		print "\nI see $AverageLength_Fix vs ".$DataSet_miRs->{"$New_Index AVG LENGTH"};
+		
 		# Save 5p, 3p and non-canonical counts
         $DataSet_miRs->{"$New_Index 5p"} = $FiveP;
         $DataSet_miRs->{"$New_Index 3p"} = $ThreeP;
@@ -456,7 +488,7 @@ while (<MIRDSPRING_DATA>)
 {	if ($_ =~ m/^MIRDSPRING DATA HERE/)
 	{	print OUTPUTFILE "$HeaderInfo\n";
 
-                print OUTPUTFILE "var Options = ['Length (nt)', 'Editing (no data)', '5\\' IsomiR (%)', '3\\' IsomiRs (%)', 'Arm processing 5p/(5p+3p)','Non-Canonical Processing (%)', 'Polycistronic miR analysis', 'Cummulative Reads', 'Threshold (miRs > minimum abundance)', 'Seed Frequency (data set)','% of tags edited'];var GraphOption = 7;\n";
+        print OUTPUTFILE "var Options = ['Length (nt)', 'Editing (no data)', '5\\' IsomiR (%)', '3\\' IsomiRs (%)', 'Arm processing 5p/(5p+3p)','Non-Canonical Processing (%)', 'Polycistronic miR analysis', 'Cummulative Reads', 'Threshold (miRs > minimum abundance)', 'Seed Frequency (data set)','% of tags edited'];var GraphOption = 7;\n";
 		print OUTPUTFILE "var WindowSize = [1000,5000,12000,25000,50000];\nvar WindowOption = 3;	// The index for WindowSize.\n";
 		print OUTPUTFILE "var miRBaseWindow = $parameters->{mbase};  // the mirbase window used to count tags\n";
 		print OUTPUTFILE "var RNAEditing = ";
@@ -492,4 +524,20 @@ close MIRDSPRING_DATA;
 
 print "\n$parameters->{output} file created\n";
 exit(0);
+
+sub ScriptSettings()
+{	my $miRspringHeader =  "\nHeaderInfo.MIRSPRING += \"<br><br>\@MIRSPRING Intermediate_to_miRspring.pl settings<br>";
+	
+	$miRspringHeader   .= "Species (-s): ".$parameters->{species}."<br>";
+	$miRspringHeader   .= "Min length (-ml): ".$parameters->{min_length}."<br>";
+	$miRspringHeader   .= "Number of mismatches (-mm): ".$parameters->{mismatch}."<br>";
+	$miRspringHeader   .= "Number of flanking nucleotides (-flank): ".$parameters->{flank}."<br>";
+	$miRspringHeader   .= "Reference format (-ref): ".$parameters->{reference_format}."<br>";
+	$miRspringHeader   .= "Minimum number of tags (-mintag): ".$parameters->{mintag}."<br>";
+	$miRspringHeader   .= "tag frequency (-tagfreq): ".$parameters->{tagfreq}."<br>";
+	$miRspringHeader   .= "Start tag frequency (-starttagfreq): ".$parameters->{starttagfreq}."<br>\";\n";
+	
+	return $miRspringHeader;
+}
+
 
